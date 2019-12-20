@@ -3,12 +3,16 @@
  */
 const 	express 			= require('express'),
 		mongoose 			= require('mongoose'),
+	  	flash 				= require('connect-flash'),
 	  	passport			= require('passport'),
 		path 				= require('path'),
 		bodyParser 			= require('body-parser'),
 	  	User				= require('./models/user'),
 	  	LocalStrategy		= require('passport-local'),
-	  	passportLocalMongose= require('passport-local-mongoose');
+	  	passportLocalMongose= require('passport-local-mongoose'),
+		middleware			= require('./middleware');
+
+const authRoutes 			= require('./routes/auth')
 
 /**
  * App Variables
@@ -34,10 +38,11 @@ app.use(require('express-session')({
 	secret: "no secret here",
 	resave: false,
 	saveUninitialized: false
-}))
+}));
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.set('view engine', 'ejs');
+app.use(flash());
 
 
 // PASSPORT CONFIGURATION
@@ -53,71 +58,18 @@ passport.use(new LocalStrategy(User.authenticate()))
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
 
-
-
-
-/**
- * Routes Definitions
- */
-app.get('/', (req, res) => {
-	res.render('landing');
+app.use(function(req, res, next){
+	res.locals.error = req.flash("error");
+	res.locals.success = req.flash("success");
+	next()
 });
 
-app.get('/home', isLoggedIn, (req, res) => {
+app.get('/home', middleware.isLoggedIn, (req, res) => {
 	res.render('home')
 });
 
-// Auth routes
+app.use(authRoutes);
 
-app.get('/register', (req, res) => {
-	
-	res.render('register');
-});
-
-//handing user sign up
-
-
-app.post('/register', (req, res) => {
-
-	let newUser = ({username: req.body.username});
-	User.register(new User({
-		username: req.body.username
-	}), req.body.password, (err, user)=> {
-		if(err) {
-			console.log(err);
-			return res.render('register');
-		}
-		passport.authenticate('local')(req, res, function() {
-			res.redirect('/home');
-		});
-	});
-});
-
-// login routes
-app.get('/login', (req, res)=>{
-	res.render('login')
-});
-
-// login logic
-app.post('/login', passport.authenticate('local', {
-	successRedirect: '/home',
-	failureRedirect: '/login'
-}), (req, res) => {
-	
-});
-
-// logout route
-app.get('/logout', (req, res)=>{
-	req.logout();
-	res.redirect('/')
-});
-
-function isLoggedIn(req, res, next) {
-	if(req.isAuthenticated()){
-		return next()
-	}
-	res.redirect('/login')
-};
 
 /**
  * Server Activation
