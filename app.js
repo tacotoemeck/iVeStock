@@ -12,7 +12,8 @@ const 	express 			= require('express'),
 	  	passportLocalMongose= require('passport-local-mongoose'),
 		middleware			= require('./middleware');
 
-const authRoutes 			= require('./routes/auth')
+const authRoutes 			= require('./routes/auth'),
+	  stockRoutes			= require('./routes/stock');
 
 /**
  * App Variables
@@ -69,11 +70,12 @@ app.get('/home', middleware.isLoggedIn, (req, res) => {
 });
 
 app.use(authRoutes);
+app.use('/stock', stockRoutes);
 
 
 /**
  * Server Activation
  */
 app.listen(port, () => {
-	console.log('server is runningnp')
+	console.log('server is running')
 });

@@ -1,0 +1,35 @@
+<%- include ('../partials/header') %>
+
+
+<div class="container">
+<div class="jumbotron">
+	  <h2 class="display-4">Stock</h2>
+
+  <hr class="my-4">
+ 	<% stock.forEach(function(stock) { %>
+		<div class="col-md-3 col-sm-6">
+			<div class="thumbnail">
+				<img src='<%= stock.image %>'>
+				<div class="caption">
+					<h4><%= stock.name %></h4>
+				</div>
+				<p>
+					<a href="/stock/<%= stock._id %>"class="btn btn-primary">More Info</a>
+				</p>
+			</div>
+						
+		</div>
+	<% }) %>
+  <hr class="my-4">
+	 <p class="lead">
+		<a href="/stock/new" class="btn btn-large btn-warning btn-block">ADD NEW STOCK ITEM</a>
+		<a href="" class="btn btn-large btn-success btn-block">EDIT STOCK ITEMS</a>
+	 </p>	
+
+</div>
+</div>
+
+
+
+
+<%- include('../partials/footer') %>
