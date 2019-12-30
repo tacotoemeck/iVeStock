@@ -2,9 +2,15 @@ const mongoose = require('mongoose');
 
 const stockSchema = new mongoose.Schema({
 	name: String,
-	measure: String,
+	category: String,
 	amount: String,
 	description: String,
+	measures: [
+		{
+		type: mongoose.Schema.Types.ObjectId,
+		ref: "Measure"
+	}
+	],
 	author: {
 		id: {
 			type: mongoose.Schema.Types.ObjectId,

@@ -9,8 +9,12 @@ const 	express 			= require('express'),
 		bodyParser 			= require('body-parser'),
 	  	User				= require('./models/user'),
 	  	LocalStrategy		= require('passport-local'),
+	    methodOverride 		= require('method-override'),
+	  	Campground 			= require("./models/stock"),
 	  	passportLocalMongose= require('passport-local-mongoose'),
+	  	seedDB 				= require('./seeds'),
 		middleware			= require('./middleware');
+	  	
 
 const authRoutes 			= require('./routes/auth'),
 	  stockRoutes			= require('./routes/stock');
@@ -29,20 +33,17 @@ mongoose.set('useFindAndModify', false);
 mongoose.set('useCreateIndex', true);
 mongoose.set('useUnifiedTopology', true);
 
-console.log(process.env.DATABASEURL)
+// console.log(process.env.DATABASEURL)
 
+seedDB();
 mongoose.connect('mongodb://localhost/iVeStock', {useNewUrlParser: true, useUnifiedTopology: true})
 .then(() => console.log('connecting to database successful'))
 .catch(err => console.error('could not connect to mongo DB', err));
 
-app.use(require('express-session')({
-	secret: "no secret here",
-	resave: false,
-	saveUninitialized: false
-}));
-
-app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
+app.use(express.static(__dirname + '/public'));
+app.use(methodOverride("_method"));
 app.use(flash());
 
 
@@ -71,6 +72,7 @@ app.get('/home', middleware.isLoggedIn, (req, res) => {
 
 app.use(authRoutes);
 app.use('/stock', stockRoutes);
+
 
 
 /**
