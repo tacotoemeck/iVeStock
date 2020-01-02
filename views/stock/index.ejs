@@ -2,26 +2,26 @@
 
 
 <div class="container">
-<div class="jumbotron">
-	  <h2 class="display-4">Stock</h2>
+	<div class="jumbotron">
+		<h2 class="display-4">Stock</h2>
 
-  <hr class="my-4">
- 	<% stock.forEach((stock) => { %>
+		<hr class="my-4">
+		<% stock.forEach((stock) => { %>
 		<!-- <div class="col-md-3 col-sm-6"> -->
-			<!-- <div class="btn btn-secondary btn-lg" style="width: 100%; margin-top:20px">
+		<!-- <div class="btn btn-secondary btn-lg" style="width: 100%; margin-top:20px">
 	
 			</div> -->
-	<a href="/stock/<%= stock._id %>"class="btn btn-secondary btn-lg" style="width: 100%; margin-top:20px"><%= stock.name%></a>
-						
-		<!-- </div> -->
-	<% }) %>
-  <hr class="my-4">
-	 <p class="lead">
-		<a href="/stock/new" class="btn btn-large btn-warning btn-block">ADD NEW STOCK ITEM</a>
-		<a href="" class="btn btn-large btn-success btn-block">EDIT STOCK ITEMS</a>
-	 </p>	
+		<a href="/stock/<%= stock._id %>" class="btn btn-secondary btn-lg"
+			style="width: 100%; margin-top:20px"><%= stock.name%></a>
 
-</div>
+		<!-- </div> -->
+		<% }) %>
+		<hr class="my-4">
+		<p class="lead">
+			<a href="/stock/new" class="btn btn-large btn-warning btn-block">ADD NEW STOCK ITEM</a>
+		</p>
+
+	</div>
 </div>
 
 
