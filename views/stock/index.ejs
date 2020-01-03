@@ -6,15 +6,38 @@
 		<h2 class="display-4">Stock</h2>
 
 		<hr class="my-4">
+		<h4>COOKED</h4>
 		<% stock.forEach((stock) => { %>
-		<!-- <div class="col-md-3 col-sm-6"> -->
-		<!-- <div class="btn btn-secondary btn-lg" style="width: 100%; margin-top:20px">
-	
-			</div> -->
+
+		<% if ( stock.category === "Cooked") { %>
+
+		<a href="/stock/<%= stock._id %>" class="btn btn-secondary btn-lg"
+			style="width: 100%; margin:10px"><%= stock.name%></a>
+
+		<% } %>
+		<% }) %>
+		<hr class="my-4">
+		<h4>FRESH</h4>
+		<% stock.forEach((stock) => { %>
+
+		<% if ( stock.category === "Fresh") { %>
+
 		<a href="/stock/<%= stock._id %>" class="btn btn-secondary btn-lg"
 			style="width: 100%; margin-top:20px"><%= stock.name%></a>
 
-		<!-- </div> -->
+		<% } %>
+		<% }) %>
+
+		<hr class="my-4">
+		<h4>PACKAGING</h4>
+		<% stock.forEach((stock) => { %>
+
+		<% if ( stock.category === "Packaging") { %>
+
+		<a href="/stock/<%= stock._id %>" class="btn btn-secondary btn-lg"
+			style="width: 100%; margin-top:20px"><%= stock.name%></a>
+
+		<% } %>
 		<% }) %>
 		<hr class="my-4">
 		<p class="lead">

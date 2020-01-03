@@ -4,25 +4,56 @@
 <div class="container">
   <div class="jumbotron">
     <h2 class="display-4"><%= stock.name %></h2>
-    <div class="buttons">
-      <a href="/stock/<%= stock._id %>/edit" class="btn btn-xs btn-warning"> Edit</a>
-      <form action="/stock/<%= stock._id %>?_method=DELETE" method="POST">
-        <button class="btn btn-xs btn-danger">Delete</button>
-      </form>
+    <a href="/stock/<%= stock._id %>/edit" class="btn btn-lg btn-info btn-block">ADD/UPDATE
+      <%= stock.name.toUpperCase() %></a>
 
-    </div>
 
     <hr class="my-4">
     <table class="table table-dark">
       <thead>
         <tr>
-          <th scope="col">Currently you've: </th>
+          <th scope="col">Currently you've:
+
+            <% let total = 0; %>
+            <% for (let i = 0; i < stock.stockTake.length; i++) { %>
+            <% total+= Number(stock.stockTake[i].volume) %>
+            <% } %>
+            <%= total %> kg of <%= stock.name %>
+
+
+          </th>
           <!-- <th scope="col"> ejs stock.amount ejs tagkg</th> -->
         </tr>
       </thead>
+
+    </table>
+    <h5>OF WHICH:</h5>
+
+    <table class="table table-dark">
+      <thead>
+        <tr>
+          <th scope="col">Storing Unit:</th>
+          <th scope="col">Approximate weight:</th>
+          <th scope="col">Location:</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% stock.stockTake .forEach((item) => { %>
+        <tr>
+          <th scope="col"> <%= item.storingUnit %> </th>
+          <th scope="col"> <%= item.volume %> </th>
+          <th scope="col"> <%= item.location %> </th>
+        </tr>
+
+        <% });	%>
+
+
+      </tbody>
     </table>
 
     <hr class="my-4">
+    <hr class="my-4">
+    <h5>ADD/EDIT STORAGE UNITS:</h5>
     <table class="table table-dark">
       <thead>
         <tr>
@@ -48,7 +79,13 @@
       </tbody>
     </table>
     <hr class="my-4">
+    <div class="buttons">
+      <a href="/stock/<%= stock._id %>/edit" class="btn btn-xs btn-warning"> Edit</a>
+      <form action="/stock/<%= stock._id %>?_method=DELETE" method="POST">
+        <button class="btn btn-xs btn-danger">Delete</button>
+      </form>
 
+    </div>
 
   </div>
 
