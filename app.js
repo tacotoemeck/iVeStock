@@ -12,6 +12,7 @@ const express = require('express'),
 	methodOverride = require('method-override'),
 	Stock = require("./models/stock"),
 	Measure = require("./models/measures"),
+	StockUpdate = require("./models/stockItemUpdate"),
 	passportLocalMongose = require('passport-local-mongoose'),
 	seedDB = require('./seeds'),
 	middleware = require('./middleware');
@@ -19,7 +20,8 @@ const express = require('express'),
 
 const authRoutes = require('./routes/auth'),
 	stockRoutes = require('./routes/stock'),
-	measureRoutes = require('./routes/measures');
+	measureRoutes = require('./routes/measures'),
+	stockUpdateRoutes = require('./routes/stockItemUpdate');
 
 /**
  * App Variables
@@ -76,6 +78,7 @@ app.get('/home', middleware.isLoggedIn, (req, res) => {
 app.use(authRoutes);
 app.use('/stock', stockRoutes);
 app.use('/stock/:id/measures', measureRoutes);
+app.use('/stock/:id/stockUpdate', stockUpdateRoutes);
 
 
 

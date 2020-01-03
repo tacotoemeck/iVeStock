@@ -14,6 +14,7 @@ router.get("/new", middleware.isLoggedIn, function (req, res) {
         if (err) {
             req.flash("error", "Item not found");
         } else {
+
             res.render("measures/new", { stock: stock });
         }
     });
@@ -46,7 +47,7 @@ router.get("/:measures_id/edit", middleware.isLoggedIn, function (req, res) {
 
     // Retrieve the measure unit with matching ID from database
     Measure.findById(req.params.measures_id, function (err, measures) {
-
+        console.log(measures)
         if (err) {
             req.flash("error", "Item not found");
             res.redirect("back");

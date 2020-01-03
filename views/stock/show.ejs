@@ -4,7 +4,7 @@
 <div class="container">
   <div class="jumbotron">
     <h2 class="display-4"><%= stock.name %></h2>
-    <a href="/stock/<%= stock._id %>/edit" class="btn btn-lg btn-info btn-block">ADD/UPDATE
+    <a href="/stock/<%= stock._id %>/stockUpdate/new" class="btn btn-lg btn-info btn-block">ADD/UPDATE
       <%= stock.name.toUpperCase() %></a>
 
 
@@ -39,6 +39,7 @@
       </thead>
       <tbody>
         <% stock.stockTake .forEach((item) => { %>
+
         <tr>
           <th scope="col"> <%= item.storingUnit %> </th>
           <th scope="col"> <%= item.volume %> </th>

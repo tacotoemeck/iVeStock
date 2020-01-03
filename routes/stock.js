@@ -33,6 +33,7 @@ router.post('/', middleware.isLoggedIn, function (req, res) {
 	let amount = req.body.amount;
 	let description = req.body.description;
 	let measure = req.body.measure;
+	let stockTake = req.body.stockTake;
 
 	let author = {
 		id: req.user._id,
