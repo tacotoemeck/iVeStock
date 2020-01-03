@@ -7,9 +7,15 @@ const stockSchema = new mongoose.Schema({
 	description: String,
 	measures: [
 		{
-		type: mongoose.Schema.Types.ObjectId,
-		ref: "Measure"
-	}
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "Measure"
+		}
+	],
+	stockTake: [
+		{
+			type: mongoose.Schema.Types.ObjectId,
+			ref: "StockTake"
+		}
 	],
 	author: {
 		id: {

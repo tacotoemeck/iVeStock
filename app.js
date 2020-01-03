@@ -37,7 +37,7 @@ mongoose.set('useUnifiedTopology', true);
 
 // console.log(process.env.DATABASEURL)
 
-// seedDB();
+seedDB();
 mongoose.connect('mongodb://localhost/iVeStock', { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => console.log('connecting to database successful'))
 	.catch(err => console.error('could not connect to mongo DB', err));
