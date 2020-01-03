@@ -69,7 +69,10 @@
           <th scope="col"> <%= measure.name %> </th>
           <th scope="col"> <%= measure.weight %> </th>
           <th><a href="/stock/<%= stock._id %>/measures/<%= measure._id %>/edit"
-              class="btn btn-xs btn-warning btn-block" style="">Edit</a>
+              class="btn btn-xs btn-warning btn-block">Edit</a>
+            <form action="/stock/<%= stock._id %>/measures/<%= measure._id %>?_method=DELETE" method="POST">
+              <button class="btn btn-xs btn-danger btn-block">Delete</button>
+            </form>
           </th>
         </tr>
 

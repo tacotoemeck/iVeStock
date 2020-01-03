@@ -71,17 +71,17 @@ router.put("/:measures_id", middleware.isLoggedIn, function (req, res) {
     });
 });
 
-// // Destroy route
-// router.delete("/:measures_id", middleware.isLoggedIn, function (req, res) {
-//     Measure.findByIdAndRemove(req.params.measures_id, function (err) {
-//         if (err) {
-//             req.flash("error", "Comment not found");
-//             res.redirect("back");
-//         } else {
-//             req.flash("success", "Successfully deleted comment");
-//             res.redirect("/campgrounds/" + req.params.id);
-//         }
-//     });
-// });
+// Destroy route
+router.delete("/:measures_id", middleware.isLoggedIn, function (req, res) {
+    Measure.findByIdAndRemove(req.params.measures_id, function (err) {
+        if (err) {
+            req.flash("error", "Item not found");
+            res.redirect("back");
+        } else {
+            req.flash("success", "Successfully deleted a storage unit");
+            res.redirect("/stock/" + req.params.id);
+        }
+    });
+});
 
 module.exports = router;
