@@ -5,3 +5,23 @@
     border-radius: .2rem;
   }
 
+  .stockTHStoring {
+    width: 25%;
+  }
+
+  .stockTHWeight {
+    width: 25%;
+  }
+
+  .currentStockButtons {
+    display: flex;
+    width: 100%;
+    justify-content: space-evenly;
+  }
+
+  .updateBtn {
+    width:50%; display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+

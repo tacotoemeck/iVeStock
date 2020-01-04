@@ -4,8 +4,8 @@
 <div class="container">
   <div class="jumbotron">
     <h2 class="display-4"><%= stock.name %></h2>
-    <a href="/stock/<%= stock._id %>/stockUpdate/new" class="btn btn-lg btn-info btn-block">ADD/UPDATE
-      <%= stock.name.toUpperCase() %></a>
+    <a href="/stock/<%= stock._id %>/stockUpdate/new" class="btn btn-lg btn-info btn-block">ADD NEW STOCK</a>
+
 
 
     <hr class="my-4">
@@ -16,37 +16,65 @@
 
             <% let total = 0; %>
             <% for (let i = 0; i < stock.stockTake.length; i++) { %>
-            <% total+= Number(stock.stockTake[i].volume) %>
-            <% } %>
-            <%= total %> kg of <%= stock.name %>
 
+            <% total+= Number(stock.measures.find(measure=> measure.name === stock.stockTake[i].storingUnit).weight /stock.stockTake[i].volume) %>
+            <% } %>
+            <%= total.toFixed(2) %> kg of <%= stock.name %>
 
           </th>
-          <!-- <th scope="col"> ejs stock.amount ejs tagkg</th> -->
+
         </tr>
       </thead>
 
     </table>
     <h5>OF WHICH:</h5>
 
-    <table class="table table-dark">
+
+
+
+    <% stock.stockTake.forEach(collection => { %>
+    <table class="table table-dark table-striped">
       <thead>
         <tr>
-          <th scope="col">Storing Unit:</th>
-          <th scope="col">Approximate weight:</th>
-          <th scope="col">Location:</th>
+          <th class="locationTable bg-info" colspan="3"><%=collection.location || 'LOCATION UNASSIGNED' %></th>
+        </tr>
+      </thead>
+
+
+      <thead>
+        <tr>
+          <th scope="col" class="stockTHStoring">Storing Unit:</th>
+          <th scope="col" class="stockTHWeight">Approximate weight:</th>
+          <th scope="col">Action</th>
         </tr>
       </thead>
       <tbody>
-        <% stock.stockTake .forEach((item) => { %>
 
+        <% stock.stockTake .forEach((item, i) => { %>
+
+        <% if (item.location === collection.location) { %>
         <tr>
-          <th scope="col"> <%= item.storingUnit %> </th>
-          <th scope="col"> <%= item.volume %> </th>
-          <th scope="col"> <%= item.location %> </th>
-        </tr>
+          <th scope="col" class="stockTHStoring"> <%= item.storingUnit %> </th>
+          <th scope="col" class="stockTHWeight">
+            <%= (stock.measures.find(measure=> measure.name === item.storingUnit).weight / item.volume).toFixed(2) %> kg
+          </th>
 
+          <th scope="col" class="currentStockButtons"> <a href="/stock/<%= stock._id %>/stockUpdate/<%=item._id%>/edit"
+              class=" btn  btn-success updateBtn">UPDATE</a>
+
+            <form action="" method=" POST">
+              <button class="btn  btn-warning ">MARK AS SOLD</button>
+            </form>
+            <form action="" method="POST">
+              <button class="btn  btn-danger ">MARK AS WASTE</button>
+            </form>
+
+          </th>
+        </tr>
+        <% } %>
         <% });	%>
+
+        <% }); %>
 
 
       </tbody>

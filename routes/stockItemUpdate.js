@@ -36,50 +36,6 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 
 
 
-// // New route
-// router.get("/new", middleware.isLoggedIn, function (req, res) {
-//     Stock.findById(req.params.id, function (err, stock) {
-//         console.log(stock)
-//         console.log(res)
-//         if (err) {
-//             req.flash("error", "Item not found");
-//         } else {
-//             res.render("stockItems/show", { stock: stock, measures: measures })
-
-//             Measure.findById(user.friends[i])
-//                 .then((friend) => {
-//                     friends.unshift({
-//                         firstName: friend.firstName,
-//                         lastName: friend.lastName,
-//                         _id: friend._id
-//                     })
-//                 })
-//                 .then(() => {
-//                     res.render("user", { userData: user, friends: friends })
-//                 })
-//                 .catch(err => {
-//                     console.log(err);
-//                     req.flash("error", "Could not find the friends list")
-//                     res.redirect("back")
-//                 })
-
-
-
-//             // Measure.findById(stock.measures[0], (err, measure) => {
-//             //     if (err) {
-//             //         req.flash("error", "Item not found");
-//             //     } else {
-//             //         console.log(stock.measures)
-//             //         res.render("stockItems/show", { stock: stock, measures: measure });
-//             //     }
-//             // })
-//             // console.log(stock.measures[0])
-//             // res.render("stockItems/show", { stock: stock, measures: stock.measures });
-//         }
-//     });
-// });
-
-
 // Create route
 router.post("/", middleware.isLoggedIn, function (req, res) {
     Stock.findById(req.params.id, function (err, stock) {
@@ -88,10 +44,9 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
             res.redirect("/stock/");
         } else {
             // Add a new storage method 
-            console.log(stock)
+
             StockUpdate.create(req.body.stock, function (err, stockItem) {
-                console.log(req.body.stock)
-                console.log(stockItem)
+
                 if (err) {
                     req.flash("error", "Something went wrong");
                 } else {
@@ -104,26 +59,44 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
     });
 });
 
-// // Edit route
-// router.get("/:measures_id/edit", middleware.isLoggedIn, function (req, res) {
+// Edit route
+router.get("/:stockTake_id/edit", middleware.isLoggedIn, function (req, res) {
 
-//     // Retrieve the measure unit with matching ID from database
-//     Measure.findById(req.params.measures_id, function (err, measures) {
+    // Retrieve the stock item unit with matching ID from database
+    StockUpdate.findById(req.params.stockTake_id, function (err, stockItem) {
 
-//         if (err) {
-//             req.flash("error", "Item not found");
-//             res.redirect("back");
-//         } else {
-//             console.log(req.params)
-//             res.render("measures/edit", { measures: measures, stock_id: req.params.id, stock: req.params });
-//         }
-//     });
-// });
+        if (err) {
+            req.flash("error", "Item not found");
+            res.redirect("back");
+        } else {
+            let measures = [];
+            Stock.findById(req.params.id, (err, item) => {
 
-// // Update route
-// router.put("/:measures_id", middleware.isLoggedIn, function (req, res) {
+                if (item.measures.length > 0) {
+                    item.measures.map((x) => {
+                        console.log(x)
+                        Measure.findById(x, (err, val) => {
+                            measures.push(val)
+                        })
+                    })
+                    console.log(req.params)
+                    setTimeout(function () { res.render("stockItems/edit", { stockItems: stockItem, stock_id: req.params.id, measures: measures, stock: req.params }); }, 1000);
+
+                }
+            })
+
+
+
+
+            // res.render("stockTake/edit", { stockItems: stockItem, stock_id: req.params.id, stock: req.params });
+        }
+    });
+});
+
+// Update route
+// router.put("/:stockUpdate_id", middleware.isLoggedIn, function (req, res) {
 //     console.log(req.params.measures_id)
-//     Measure.findByIdAndUpdate(req.params.measures_id, req.body.measures, function (err, stock) {
+//     StockUpdate.findByIdAndUpdate(req.params.measures_id, req.body.measures, function (err, stock) {
 //         if (err) {
 //             req.flash("error", "Item not found");
 //             res.redirect("back");

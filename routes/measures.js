@@ -47,12 +47,12 @@ router.get("/:measures_id/edit", middleware.isLoggedIn, function (req, res) {
 
     // Retrieve the measure unit with matching ID from database
     Measure.findById(req.params.measures_id, function (err, measures) {
-        console.log(measures)
+
         if (err) {
             req.flash("error", "Item not found");
             res.redirect("back");
         } else {
-            console.log(req.params)
+
             res.render("measures/edit", { measures: measures, stock_id: req.params.id, stock: req.params });
         }
     });
@@ -60,7 +60,7 @@ router.get("/:measures_id/edit", middleware.isLoggedIn, function (req, res) {
 
 // Update route
 router.put("/:measures_id", middleware.isLoggedIn, function (req, res) {
-    console.log(req.params.measures_id)
+
     Measure.findByIdAndUpdate(req.params.measures_id, req.body.measures, function (err, stock) {
         if (err) {
             req.flash("error", "Item not found");
