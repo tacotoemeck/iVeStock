@@ -1,10 +1,9 @@
 const mongoose = require("mongoose");
 
 const historySchema = new mongoose.Schema({
-    measureID: String,
-    action: String,
     date: String,
     volume: String,
+    changeFromLast: String,
     storingUnit: String,
     location: String,
     action: String

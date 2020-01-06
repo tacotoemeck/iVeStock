@@ -28,31 +28,27 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
 
 // Create route
 router.post("/", middleware.isLoggedIn, function (req, res) {
-    Stock.findById(req.params.id, function (err, stock) {
+    Stock.findById(req.params.id).populate("stockTake").populate("history").exec(function (err, stock) {
         if (err) {
             req.flash("error", "Stock item not found");
             res.redirect("/stock/");
         } else {
             // Add a new storage method 
-            History.create(req.body.stock, function (err, stockItem) {
-                // console.log(stock)
-                stockItem.action = "created";
-
-                stock.history.push(stockItem);
-
-                stockItem.save();
-
-
-            });
             StockUpdate.create(req.body.stock, function (err, stockItem) {
 
                 if (err) {
                     req.flash("error", "Something went wrong");
                 } else {
+
+                    History.create(stockItem, function (err, item) {
+                        stockItem.action = "created";
+                        stockItem.history.push(stockItem);
+                        stockItem.markModified('history');
+                        stock.markModified('stockItem');
+                        stockItem.save();
+                    });
                     stock.stockTake.push(stockItem);
-                    console.log(stock.history)
                     stock.save();
-                    console.log(stock.stockTake[stock.stockTake.length - 1])
                     res.redirect('/stock/' + stock._id)
                 }
             });
@@ -82,25 +78,22 @@ router.get("/:stockTake_id/edit", middleware.isLoggedIn, function (req, res) {
 // Update route
 router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
 
-    Stock.findById(req.params.id).populate("history").exec(function (err, stock) {
-        History.create(req.body.stock, function (err, stockItem) {
-            console.log(stock)
-            stockItem.action = "update";
-
-            stock.history.push(stockItem);
-            stockItem.save();
-            stock.save();
-        })
-        console.log(req.body)
-
-
-    });
-    StockUpdate.findByIdAndUpdate(req.params.stockTake_id, req.body.stock, function (err, stock) {
+    StockUpdate.findByIdAndUpdate(req.params.stockTake_id, req.body.stock).populate("history").exec(function (err, stock) {
 
         if (err) {
             req.flash("error", "Item not found");
             res.redirect("back");
         } else {
+            History.create(req.body.stock, function (err, stockItem) {
+
+                stockItem.action = "update";
+                stockItem.changeFromLast = -(Number(stock.volume) - Number(stockItem.volume));
+                stock.history.push(stockItem);
+                stockItem.save();
+                stock.save();
+                console.log(stock)
+
+            })
             res.redirect("/stock/" + req.params.id);
 
         }
@@ -109,7 +102,7 @@ router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
 
 // Destroy route
 router.delete("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
-    console.log(res)
+
 
     StockUpdate.findByIdAndRemove(req.params.stockTake_id, function (err) {
         if (err) {

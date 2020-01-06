@@ -54,7 +54,7 @@ function seedDB() {
                             });
                         StockTake.create(
                             {
-                                volume: "12",
+                                volume: "10",
                                 storingUnit: "Araven",
                                 location: "Southbank"
                             }, function (err, stockitem) {

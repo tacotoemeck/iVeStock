@@ -17,12 +17,12 @@ const stockSchema = new mongoose.Schema({
 			ref: "StockTake"
 		}
 	],
-	history: [
-		{
-			type: mongoose.Schema.Types.ObjectId,
-			ref: "History"
-		}
-	],
+	// history: [
+	// 	{
+	// 		type: mongoose.Schema.Types.ObjectId,
+	// 		ref: "History"
+	// 	}
+	// ],
 	author: {
 		id: {
 			type: mongoose.Schema.Types.ObjectId,
