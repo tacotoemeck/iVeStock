@@ -1,3 +1,7 @@
+body {
+  background-image: url("https://images.unsplash.com/photo-1465176728568-7da7e336b1e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80");
+}
+
 .btn-xs {
     padding: .25rem .4rem;
     font-size: .875rem;

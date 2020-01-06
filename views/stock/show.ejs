@@ -28,19 +28,23 @@
 
     </table>
     <h5>OF WHICH:</h5>
-
-
-
-
+    <% let locations = []; %>
     <% stock.stockTake.forEach(collection => { %>
+    <% locations.push(collection.location) %>
+    <% }) %>
+
+
+    <% let locationsSet = new Set(locations); %>
+
+    <% locationsSet.forEach(location => { %>
+
     <table class="table table-dark table-striped">
       <thead>
         <tr>
-          <th class="locationTable bg-info" colspan="3"><%=collection.location || 'LOCATION UNASSIGNED' %></th>
+          <th class="locationTable bg-info" colspan="3"><%=location || 'LOCATION UNASSIGNED' %>
+          </th>
         </tr>
       </thead>
-
-
       <thead>
         <tr>
           <th scope="col" class="stockTHStoring">Storing Unit:</th>
@@ -48,37 +52,46 @@
           <th scope="col">Action</th>
         </tr>
       </thead>
-      <tbody>
 
-        <% stock.stockTake .forEach((item, i) => { %>
+      <% stock.stockTake.forEach(collection => { %>
 
-        <% if (item.location === collection.location) { %>
-        <tr>
-          <th scope="col" class="stockTHStoring"> <%= item.storingUnit %> </th>
-          <th scope="col" class="stockTHWeight">
-            <%= (stock.measures.find(measure=> measure.name === item.storingUnit).weight / item.volume).toFixed(2) %> kg
-          </th>
-
-          <th scope="col" class="currentStockButtons"> <a href="/stock/<%= stock._id %>/stockUpdate/<%=item._id%>/edit"
-              class=" btn  btn-success updateBtn">UPDATE</a>
-
-            <form action="" method=" POST">
-              <button class="btn  btn-warning ">MARK AS SOLD</button>
-            </form>
-            <form action="" method="POST">
-              <button class="btn  btn-danger ">MARK AS WASTE</button>
-            </form>
-
-          </th>
-        </tr>
-        <% } %>
-        <% });	%>
-
-        <% }); %>
+      <% if (location === collection.location) { %>
 
 
-      </tbody>
+
+      <tr>
+        <th scope="col" class="stockTHStoring"> <%= collection.storingUnit %> </th>
+        <th scope="col" class="stockTHWeight">
+
+          <%= (stock.measures.find(measure=> measure.name === collection.storingUnit).weight * collection.volume / 10).toFixed(2) %>
+          kg
+        </th>
+
+        <th scope="col" class="currentStockButtons"> <a
+            href="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>/edit"
+            class=" btn  btn-success updateBtn">UPDATE</a>
+
+          <form action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=DELETE" method="POST">
+            <button class="btn  btn-warning ">MARK AS SOLD</button>
+          </form>
+          <form action="/stock/<%= stock._id %>/stockUpdate/<%= collection._id %>?_method=DELETE" method="POST">
+            <button class="btn  btn-danger ">MARK AS WASTE</button>
+          </form>
+
+        </th>
+      </tr>
+
+      <% } %>
+
+      <% }); %>
     </table>
+    <%}); %>
+
+
+
+
+
+
 
     <hr class="my-4">
     <hr class="my-4">

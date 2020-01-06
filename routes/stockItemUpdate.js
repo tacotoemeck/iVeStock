@@ -1,7 +1,9 @@
 const express = require('express'),
     Stock = require('../models/stock'),
+
     Measure = require("../models/measures"),
     StockUpdate = require("../models/stockItemUpdate"),
+    History = require('../models/history'),
     middleware = require('../middleware'),
     passport = require('passport'),
     router = express.Router({ mergeParams: true });
@@ -11,25 +13,13 @@ router.use(express.static(__dirname + '/public'));
 
 router.get("/new", middleware.isLoggedIn, (req, res) => {
     let measures = [];
-    Stock.findById(req.params.id, (err, stock) => {
+    Stock.findById(req.params.id).populate("measures").populate("stockTake").populate("history").exec(function (err, stock) {
 
         if (err) {
             req.flash("error", "Item not found");
             res.redirect("back");
         } else {
-
-            if (stock.measures.length > 0) {
-                stock.measures.map((x) => {
-                    Measure.findById(x, (err, item) => {
-                        measures.push(item)
-                    })
-                })
-                setTimeout(function () { res.render("stockItems/show", { stock: stock, measures: measures }); }, 1000);
-
-            } else {
-
-                res.render("stockItems/show", { stock: stock });
-            }
+            res.render("stockItems/show", { stock: stock });
         }
     });
 });
@@ -44,14 +34,25 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
             res.redirect("/stock/");
         } else {
             // Add a new storage method 
+            History.create(req.body.stock, function (err, stockItem) {
+                // console.log(stock)
+                stockItem.action = "created";
 
+                stock.history.push(stockItem);
+
+                stockItem.save();
+
+
+            });
             StockUpdate.create(req.body.stock, function (err, stockItem) {
 
                 if (err) {
                     req.flash("error", "Something went wrong");
                 } else {
                     stock.stockTake.push(stockItem);
+                    console.log(stock.history)
                     stock.save();
+                    console.log(stock.stockTake[stock.stockTake.length - 1])
                     res.redirect('/stock/' + stock._id)
                 }
             });
@@ -69,55 +70,56 @@ router.get("/:stockTake_id/edit", middleware.isLoggedIn, function (req, res) {
             req.flash("error", "Item not found");
             res.redirect("back");
         } else {
-            let measures = [];
-            Stock.findById(req.params.id, (err, item) => {
-
-                if (item.measures.length > 0) {
-                    item.measures.map((x) => {
-                        console.log(x)
-                        Measure.findById(x, (err, val) => {
-                            measures.push(val)
-                        })
-                    })
-                    console.log(req.params)
-                    setTimeout(function () { res.render("stockItems/edit", { stockItems: stockItem, stock_id: req.params.id, measures: measures, stock: req.params }); }, 1000);
-
-                }
+            Stock.findById(req.params.id).populate("measures").populate("stockTake").populate("history").exec(function (err, item) {
+                res.render("stockItems/edit", { stockItems: stockItem, items: item, stock_id: req.params.id, stock: req.params });
             })
 
 
-
-
-            // res.render("stockTake/edit", { stockItems: stockItem, stock_id: req.params.id, stock: req.params });
         }
     });
 });
 
 // Update route
-// router.put("/:stockUpdate_id", middleware.isLoggedIn, function (req, res) {
-//     console.log(req.params.measures_id)
-//     StockUpdate.findByIdAndUpdate(req.params.measures_id, req.body.measures, function (err, stock) {
-//         if (err) {
-//             req.flash("error", "Item not found");
-//             res.redirect("back");
-//         } else {
-//             res.redirect("/stock/" + req.params.id);
-//             // res.send('you hit update')
-//         }
-//     });
-// });
+router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
 
-// // Destroy route
-// router.delete("/:measures_id", middleware.isLoggedIn, function (req, res) {
-//     Measure.findByIdAndRemove(req.params.measures_id, function (err) {
-//         if (err) {
-//             req.flash("error", "Item not found");
-//             res.redirect("back");
-//         } else {
-//             req.flash("success", "Successfully deleted a storage unit");
-//             res.redirect("/stock/" + req.params.id);
-//         }
-//     });
-// });
+    Stock.findById(req.params.id).populate("history").exec(function (err, stock) {
+        History.create(req.body.stock, function (err, stockItem) {
+            console.log(stock)
+            stockItem.action = "update";
+
+            stock.history.push(stockItem);
+            stockItem.save();
+            stock.save();
+        })
+        console.log(req.body)
+
+
+    });
+    StockUpdate.findByIdAndUpdate(req.params.stockTake_id, req.body.stock, function (err, stock) {
+
+        if (err) {
+            req.flash("error", "Item not found");
+            res.redirect("back");
+        } else {
+            res.redirect("/stock/" + req.params.id);
+
+        }
+    });
+});
+
+// Destroy route
+router.delete("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
+    console.log(res)
+
+    StockUpdate.findByIdAndRemove(req.params.stockTake_id, function (err) {
+        if (err) {
+            req.flash("error", "Item not found");
+            res.redirect("back");
+        } else {
+            req.flash("success", "Item sold OR marked as waste");
+            res.redirect("/stock/" + req.params.id);
+        }
+    });
+});
 
 module.exports = router;

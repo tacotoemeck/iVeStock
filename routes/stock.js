@@ -56,7 +56,7 @@ router.post('/', middleware.isLoggedIn, function (req, res) {
 // SHOW - shows more info about the stock item
 router.get('/:id', middleware.isLoggedIn, function (req, res) {
 	// 	find the stock item with provided id
-	Stock.findById(req.params.id).populate("measures").populate("stockTake").exec(function (err, foundStockItem) {
+	Stock.findById(req.params.id).populate("measures").populate("stockTake").populate("history").exec(function (err, foundStockItem) {
 		if (err) {
 			console.log(err)
 		} else {
