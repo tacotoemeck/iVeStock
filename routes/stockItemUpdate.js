@@ -1,6 +1,5 @@
 const express = require('express'),
     Stock = require('../models/stock'),
-
     Measure = require("../models/measures"),
     StockUpdate = require("../models/stockItemUpdate"),
     History = require('../models/history'),
@@ -39,8 +38,13 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
                 if (err) {
                     req.flash("error", "Something went wrong");
                 } else {
+                    let today = new Date();
+                    let dd = String(today.getDate()).padStart(2, '0');
+                    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+                    let yyyy = today.getFullYear();
 
                     History.create(stockItem, function (err, item) {
+                        stockItem.date = mm + '/' + dd + '/' + yyyy;
                         stockItem.action = "created";
                         stockItem.history.push(stockItem);
                         stockItem.markModified('history');
@@ -48,6 +52,7 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
                         stockItem.save();
                     });
                     stock.stockTake.push(stockItem);
+                    console.log(stock)
                     stock.save();
                     res.redirect('/stock/' + stock._id)
                 }
@@ -84,8 +89,12 @@ router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
             req.flash("error", "Item not found");
             res.redirect("back");
         } else {
+            let today = new Date();
+            let dd = String(today.getDate()).padStart(2, '0');
+            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+            let yyyy = today.getFullYear();
             History.create(req.body.stock, function (err, stockItem) {
-
+                stockItem.date = mm + '/' + dd + '/' + yyyy;
                 stockItem.action = "update";
                 stockItem.changeFromLast = -(Number(stock.volume) - Number(stockItem.volume));
                 stock.history.push(stockItem);

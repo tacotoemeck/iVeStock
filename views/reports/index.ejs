@@ -1,0 +1,65 @@
+<%- include ('../partials/header') %>
+
+
+<div class="container">
+    <div class="jumbotron">
+        <% stock.forEach(item=> { %>
+
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th class="locationTable bg-info" colspan="3"><%= item.name %>
+                    </th>
+                </tr>
+            </thead>
+            <thead>
+                <tr>
+                    <th scope="col" class="stockTHStoring">Date:</th>
+                    <th scope="col" class="stockTHWeight">Sold:</th>
+                    <th scope="col">Wasted:</th>
+                </tr>
+            </thead>
+
+
+            <tr>
+                <th scope="col">
+                    <%dates.forEach(date => { %>
+                    <%=date %>
+
+                </th>
+                <th scope="col">
+                    <% daySales.forEach(daySale => { %>
+
+                    <% if ( daySale.date === date) { %>
+                    <%= daySale[item.name]%>
+                    <% } %>
+                    <%  })%>
+                    <% }) %>
+                </th>
+
+                <th scope="col">
+
+                </th>
+
+                </th>
+            </tr>
+
+        </table>
+        <% item.stockTake.forEach(stocks=> { %>
+
+        <% }); %>
+        <% }); %>
+
+
+
+        <hr class="my-4">
+
+        <hr class="my-4">
+        <a href="<%=/home/%>" class="btn btn-secondary btn-block">Go Back</a>
+    </div>
+</div>
+
+
+
+
+<%- include('../partials/footer') %>

@@ -11,7 +11,7 @@ const express = require('express'),
 	LocalStrategy = require('passport-local'),
 	methodOverride = require('method-override'),
 	Stock = require("./models/stock"),
-	Histtory = require("./models/history"),
+	History = require("./models/history"),
 	Measure = require("./models/measures"),
 	StockUpdate = require("./models/stockItemUpdate"),
 	passportLocalMongose = require('passport-local-mongoose'),
@@ -23,7 +23,8 @@ const authRoutes = require('./routes/auth'),
 	stockRoutes = require('./routes/stock'),
 	historyRoutes = require('./routes/history'),
 	measureRoutes = require('./routes/measures'),
-	stockUpdateRoutes = require('./routes/stockItemUpdate');
+	stockUpdateRoutes = require('./routes/stockItemUpdate'),
+	reportRoutes = require('./routes/reports');
 
 /**
  * App Variables
@@ -41,7 +42,7 @@ mongoose.set('useUnifiedTopology', true);
 
 // console.log(process.env.DATABASEURL)
 
-seedDB();
+// seedDB();
 mongoose.connect('mongodb://localhost/iVeStock', { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => console.log('connecting to database successful'))
 	.catch(err => console.error('could not connect to mongo DB', err));
@@ -82,6 +83,7 @@ app.use('/stock', stockRoutes);
 app.use('/stock/:id/history', historyRoutes);
 app.use('/stock/:id/measures', measureRoutes);
 app.use('/stock/:id/stockUpdate', stockUpdateRoutes);
+app.use('/reports', reportRoutes);
 
 
 
