@@ -3,42 +3,65 @@
 
 <div class="container">
 	<div class="jumbotron">
-		<h2 class="display-4">Stock</h2>
 
 		<hr class="my-4">
-		<h4>COOKED</h4>
-		<% stock.forEach((stock) => { %>
+		<h4 class="stock-headers">COOKED</h4>
+		<div class="row stockRows">
+			<div class="col-lg-12">
+				<p>
+					<% stock.forEach((stock) => { %>
 
-		<% if ( stock.category === "Cooked") { %>
+					<% if ( stock.category === "Cooked") { %>
 
-		<a href="/stock/<%= stock._id %>" class="btn btn-secondary btn-lg"
-			style="width: 100%; margin:10px"><%= stock.name%></a>
+					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-info">
+						<span style="font-size: 40px;"><%= stock.icon %></span><br />
+						<%= stock.name%> <br>
+					</a>
 
-		<% } %>
-		<% }) %>
+					<% } %>
+					<% }) %>
+				</p>
+			</div>
+		</div>
 		<hr class="my-4">
-		<h4>FRESH</h4>
-		<% stock.forEach((stock) => { %>
+		<h4 class="stock-headers">FRESH</h4>
+		<div class="row stockRows">
+			<div class="col-lg-12">
+				<p>
+					<% stock.forEach((stock) => { %>
 
-		<% if ( stock.category === "Fresh") { %>
+					<% if ( stock.category === "Fresh") { %>
 
-		<a href="/stock/<%= stock._id %>" class="btn btn-secondary btn-lg"
-			style="width: 100%; margin-top:20px"><%= stock.name%></a>
+					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-success">
+						<span style="font-size: 40px;"><%= stock.icon %></span><br />
+						<%= stock.name%> <br>
+					</a>
 
-		<% } %>
-		<% }) %>
+					<% } %>
+					<% }) %>
+				</p>
+			</div>
+		</div>
 
 		<hr class="my-4">
-		<h4>PACKAGING</h4>
-		<% stock.forEach((stock) => { %>
+		<h4 class="stock-headers">PACKAGING</h4>
+		<div class="row stockRows">
+			<div class="col-lg-12">
+				<p>
+					<% stock.forEach((stock) => { %>
 
-		<% if ( stock.category === "Packaging") { %>
+					<% if ( stock.category === "Packaging") { %>
 
-		<a href="/stock/<%= stock._id %>" class="btn btn-secondary btn-lg"
-			style="width: 100%; margin-top:20px"><%= stock.name%></a>
+					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-secondary">
+						<span style="font-size: 40px;"><%= stock.icon %></span><br />
+						<%= stock.name%> <br>
+					</a>
 
-		<% } %>
-		<% }) %>
+					<% } %>
+					<% }) %>
+				</p>
+			</div>
+		</div>
 		<hr class="my-4">
 		<p class="lead">
 			<a href="/stock/new" class="btn btn-large btn-warning btn-block">ADD NEW STOCK ITEM</a>

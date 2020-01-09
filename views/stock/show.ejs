@@ -3,8 +3,9 @@
 
 <div class="container ">
   <div class="jumbotron ">
-    <h2 class="display-4"><%= stock.name %></h2>
-    <a href="/stock/<%= stock._id %>/stockUpdate/new" class="btn btn-lg btn-info btn-block">ADD NEW STOCK</a>
+    <h2 class="display-4 stock-headers"><%= stock.icon %><%= stock.name %><%= stock.icon %></h2>
+    <a href="/stock/<%= stock._id %>/stockUpdate/new" class="btn btn-lg btn-success btn-block">ADD
+      NEW STOCK</a>
 
 
     <%  %>
@@ -45,7 +46,8 @@
     <table class="table table-dark table-striped">
       <thead>
         <tr>
-          <th class="locationTable bg-info" colspan="3"><%=location || 'LOCATION UNASSIGNED' %>
+          <th class="locationTable table-dark table-location-title" colspan="3">
+            <%=location.toUpperCase() || 'LOCATION UNASSIGNED' %>
           </th>
         </tr>
       </thead>
@@ -71,7 +73,7 @@
 
         <th scope="col" class="currentStockButtons">
           <a href="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>/edit"
-            class=" btn  btn-success updateBtn">UPDATE</a>
+            class=" btn  btn-success updateBtn stock-remove-buttons">UPDATE</a>
 
           <form action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=PUT" method="POST">
 
@@ -97,7 +99,7 @@
             </div>
 
             <div class="form-group">
-              <button class="btn  btn-warning ">MARK AS SOLD</button>
+              <button class="btn  btn-warning stock-remove-buttons">MARK AS SOLD</button>
             </div>
           </form>
 
@@ -125,7 +127,7 @@
             </div>
 
             <div class="form-group">
-              <button class="btn  btn-danger ">MARK AS WASTE</button>
+              <button class="btn  btn-danger stock-remove-buttons">MARK AS WASTE</button>
             </div>
           </form>
 
@@ -141,43 +143,45 @@
 
     <hr class="my-4">
     <hr class="my-4">
-    <h5>ADD/EDIT STORAGE UNITS:</h5>
-    <table class="table table-dark">
-      <thead>
-        <tr>
-          <th scope="col">Storing Unit:</th>
-          <th scope="col">Approximate weight:</th>
-          <th><a href="/stock/<%= stock._id %>/measures/new" class="btn btn-xs btn-success btn-block" style="">Add
-              New</a></th>
-        </tr>
-      </thead>
-      <tbody>
-        <% stock.measures.forEach((measure) => { %>
-        <tr>
-          <th scope="col"> <%= measure.name %> </th>
-          <th scope="col"> <%= measure.weight %> </th>
-          <th><a href="/stock/<%= stock._id %>/measures/<%= measure._id %>/edit"
-              class="btn btn-xs btn-warning btn-block">Edit</a>
-            <form action="/stock/<%= stock._id %>/measures/<%= measure._id %>?_method=DELETE" method="POST">
-              <button class="btn btn-xs btn-danger btn-block">Delete</button>
-            </form>
-          </th>
-        </tr>
+    <button class="collapsible btn btn-block btn-warning">ADD/EDIT STORAGE UNITS:</button>
+    <div class="contentCollapsible">
+      <table class="table table-dark">
+        <thead>
+          <tr>
+            <th scope="col">Storing Unit:</th>
+            <th scope="col">Approximate weight:</th>
+            <th><a href="/stock/<%= stock._id %>/measures/new" class="btn btn-xs btn-success btn-block" style="">Add
+                New</a></th>
+          </tr>
+        </thead>
+        <tbody>
+          <% stock.measures.forEach((measure) => { %>
+          <tr>
+            <th scope="col"> <%= measure.name %> </th>
+            <th scope="col"> <%= measure.weight %> </th>
+            <th><a href="/stock/<%= stock._id %>/measures/<%= measure._id %>/edit"
+                class="btn btn-xs btn-warning btn-block">Edit</a>
+              <form action="/stock/<%= stock._id %>/measures/<%= measure._id %>?_method=DELETE" method="POST">
+                <button class="btn btn-xs btn-danger btn-block">Delete</button>
+              </form>
+            </th>
+          </tr>
 
-        <% });	%>
+          <% });	%>
 
 
-      </tbody>
-    </table>
-    <hr class="my-4">
-    <div class="buttons">
-      <a href="/stock/<%= stock._id %>/edit" class="btn btn-xs btn-warning"> Edit</a>
-      <form action="/stock/<%= stock._id %>?_method=DELETE" method="POST">
-        <button class="btn btn-xs btn-danger">Delete</button>
-      </form>
-
+        </tbody>
+      </table>
     </div>
+    <hr class="my-4">
     <a href="<%=/stock/%>" class="btn btn-secondary btn-block">Go Back</a>
+  </div>
+
+  <div class="buttons-stock">
+    <a href="/stock/<%= stock._id %>/edit" class="btn btn-xs btn-warning"> Edit</a>
+    <form action="/stock/<%= stock._id %>?_method=DELETE" method="POST">
+      <button class="btn btn-xs btn-danger btn-block">Delete</button>
+    </form>
   </div>
 
 
@@ -185,5 +189,5 @@
 
 
 
-
+<script src="/JS/collapsible.js"></script>
 <%- include('../partials/footer') %>

@@ -6,6 +6,12 @@
 		<h1 style="text-align: center;">Add a New Stock Item</h1>
 		<div style="width: 90%; margin: 40px auto;">
 			<form action="/stock" method="POST">
+				<h3>Icon:</h3>
+				<p class="lead emoji-picker-container" style="width: 160px;">
+					<input type="text" class="form-control col-form-label-lg" placeholder="Pick an icon" name="icon"
+						data-emojiable="true">
+				</p>
+
 				<h3>Name:</h3>
 				<div class="form-group">
 					<input class="form-control" type="text" name='name' placeholder="name">

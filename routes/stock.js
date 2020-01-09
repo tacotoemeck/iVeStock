@@ -30,6 +30,7 @@ router.post('/', middleware.isLoggedIn, function (req, res) {
 	//get data from form and add to stock array
 	let name = req.body.name;
 	let category = req.body.category;
+	let icon = req.body.icon;
 	let amount = req.body.amount;
 	let description = req.body.description;
 	let measure = req.body.measure;
@@ -39,13 +40,14 @@ router.post('/', middleware.isLoggedIn, function (req, res) {
 		id: req.user._id,
 		username: req.user.username
 	}
-	let newStockItem = { name: name, category: category, author: author }
+	let newStockItem = { name: name, icon: icon, category: category, author: author }
 	// Create a new stock and save to DB
 	Stock.create(newStockItem, function (err, newlyCreated) {
 
 		if (err) {
 			console.log(err);
 		} else {
+			console.log(newStockItem)
 			// 			redirect back to stock page
 			res.redirect('stock');
 		}
@@ -60,6 +62,7 @@ router.get('/:id', middleware.isLoggedIn, function (req, res) {
 		if (err) {
 			console.log(err)
 		} else {
+			console.log(foundStockItem)
 			// 	render show template with that item
 			res.render('stock/show', { stock: foundStockItem })
 		}
