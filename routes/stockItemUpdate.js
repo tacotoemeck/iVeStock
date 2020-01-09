@@ -101,7 +101,7 @@ router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
             let yyyy = today.getFullYear();
             History.create(req.body.stock, function (err, stockItem) {
                 stockItem.date = mm + '/' + dd + '/' + yyyy;
-                stockItem.action = "update";
+
                 let storingUnit = stockItem.storingUnit.match(/(?<=\>).+?(?=\<)/g)
                 stockItem.storingUnitMaxWeight = storingUnit.toString();
                 stockItem.volumeInKg = stockItem.storingUnitMaxWeight * (stockItem.volume / 10);
@@ -115,14 +115,12 @@ router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
 
                 stock.history.push(stockItem);
                 stockItem.save();
-
-                stock.history.push(stockItem);
                 stock.save()
-
+                console.log(stock)
             })
 
-            console.log(stock)
-            stock.save();
+            // console.log(stock)
+            // stock.save();
             res.redirect("/stock/" + req.params.id);
 
         }

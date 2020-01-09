@@ -22,7 +22,7 @@
             <% }; %>
             <% } %>
             <% %>
-            <%= total %> kg
+            <%= total.toFixed(2) %> kg
             of <%= stock.name %>
 
           </th>
@@ -64,7 +64,7 @@
       <tr>
         <th scope="col" class="stockTHStoring"> <%= collection.storingUnit %> </th>
         <th scope="col" class="stockTHWeight">
-          <%= collection.volumeInKg %>
+          <%= Number(collection.volumeInKg).toFixed(2) %>
 
           kg
         </th>

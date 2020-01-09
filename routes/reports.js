@@ -32,16 +32,22 @@ router.get('/', middleware.isLoggedIn, async (req, res) => {
         // create an array for each name of a stock item
         let stockItems = stock.map(item => item.name);
 
-        // filter sold items by date
+        // get sold and wated items
         let daySales = [];
+        let dayWaste = [];
         eachDate.forEach(day => {
             // console.log(day)
             let salesPerDay = {}
             salesPerDay.date = day;
 
             stockItems.forEach(item => {
+                // console.log(stock.filter(x => x.name == item).map(entry => entry.stockTake).flat().map(stockItem => stockItem.history).flat().map(history => (history.date === day) ? history.changeFromLastInKg : 0))
+                let sold = stock
+                    .filter(x => x.name == item)
+                    .map(entry => entry.stockTake).flat()
+                    .map(stockItem => stockItem.history).flat()
+                    .map(history => (history.date === day && history.action !== "waste") ? history.changeFromLastInKg : 0)
 
-                let sold = stock.filter(x => x.name == item).map(entry => entry.stockTake).flat().map(stockItem => stockItem.history).flat().map(history => history.changeFromLastInKg)
                 // sum up all sales from the day
                 let daySales = 0;
                 for (let i = 0; i < sold.length; i++) {
@@ -49,18 +55,41 @@ router.get('/', middleware.isLoggedIn, async (req, res) => {
                 }
                 // display day sales 
                 salesPerDay[item] = daySales.toFixed(2);
+            });
+            // ==== WASTE ========
+            let wastePerDay = {}
+            wastePerDay.date = day;
 
+            stockItems.forEach(item => {
+                // console.log(stock.filter(x => x.name == item).map(entry => entry.stockTake).flat().map(stockItem => stockItem.history).flat().map(history => (history.date === day) ? history.changeFromLastInKg : 0))
+                let wasted = stock
+                    .filter(x => x.name == item)
+                    .map(entry => entry.stockTake).flat()
+                    .map(stockItem => stockItem.history).flat()
+                    .map(history => (history.date === day && history.action === "waste") ? history.changeFromLastInKg : 0)
+
+                // sum up all sales from the day
+                let dayWaste = 0;
+                for (let i = 0; i < wasted.length; i++) {
+                    dayWaste += Number(Math.abs(wasted[i]))
+                }
+                // display day sales 
+                wastePerDay[item] = dayWaste.toFixed(2);
 
             })
 
             daySales.push(salesPerDay)
+            dayWaste.push(wastePerDay)
+
         })
+
+
         // console.log(daySales)
 
         stock.map(item => item.stockTake.map(stockTake => stockTake.history.map(history => history.date)))
 
 
-        res.render('reports/index', { stock: stock, dates: eachDate, daySales: daySales });
+        res.render('reports/index', { stock: stock, dates: eachDate, daySales: daySales, dayWaste: dayWaste });
 
 
     } catch (err) {

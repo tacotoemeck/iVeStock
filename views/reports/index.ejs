@@ -3,56 +3,60 @@
 
 <div class="container">
     <div class="jumbotron">
-        <% stock.forEach(item=> { %>
+        <% dates.forEach(date=> { %>
 
         <table class="table table-dark table-striped">
             <thead>
                 <tr>
-                    <th class="locationTable bg-info" colspan="3"><%= item.name %>
+                    <th class="locationTable bg-info" colspan="3"><%= date %>
                     </th>
                 </tr>
             </thead>
             <thead>
                 <tr>
-                    <th scope="col" class="stockTHStoring">Date:</th>
-                    <th scope="col" class="stockTHWeight">Sold:</th>
-                    <th scope="col">Wasted:</th>
+                    <th scope="col" class="stockTHStoring" style="width:50%;">Item:</th>
+                    <th scope="col" class="stockTHWeight bg-success">Sold:</th>
+                    <th scope="col" class="bg-danger">Wasted:</th>
                 </tr>
             </thead>
 
-
+            <%stock.forEach(item => { %>
             <tr>
                 <th scope="col">
-                    <%dates.forEach(date => { %>
-                    <%=date %>
+
+                    <%=item.name %>
 
                 </th>
-                <th scope="col">
+                <th scope="col" class="table-success text-success">
                     <% daySales.forEach(daySale => { %>
 
                     <% if ( daySale.date === date) { %>
                     <%= daySale[item.name]%> kg
                     <% } %>
                     <%  })%>
-                    <% }) %>
+
                 </th>
 
-                <th scope="col">
+                <th scope="col" class="table-danger text-danger">
+                    <% dayWaste.forEach(dayWaste => { %>
 
+                    <% if ( dayWaste.date === date) { %>
+                    <%= dayWaste[item.name]%> kg
+                    <% } %>
+                    <%  })%>
+                    <% }) %>
                 </th>
 
                 </th>
             </tr>
 
         </table>
-        <% item.stockTake.forEach(stocks=> { %>
 
         <% }); %>
-        <% }); %>
 
 
 
-        <hr class="my-4">
+        <hr class=" my-4">
 
         <hr class="my-4">
         <a href="<%=/home/%>" class="btn btn-secondary btn-block">Go Back</a>
