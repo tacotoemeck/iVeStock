@@ -26,6 +26,8 @@ router.get('/', middleware.isLoggedIn, async (req, res) => {
             })
         // get an array dates for each day
         let dates = stock.map(item => item.stockTake.map(stockTake => stockTake.history.map(history => history.date))).flat(2) || [];
+
+
         let eachDate = Array.from(new Set(dates)) || [];
         // create an array for each name of a stock item
         let stockItems = stock.map(item => item.name);
@@ -33,19 +35,27 @@ router.get('/', middleware.isLoggedIn, async (req, res) => {
         // filter sold items by date
         let daySales = [];
         eachDate.forEach(day => {
+            // console.log(day)
             let salesPerDay = {}
             salesPerDay.date = day;
 
             stockItems.forEach(item => {
-                // console.log(item)
-                salesPerDay[item] = stock.filter(x => x.name == item).map(entry => entry.stockTake).flat().map(stockItem => stockItem.history).flat().map(history => history.changeFromLast);
 
-                // console.log(stock.filter(x => x.name == item).map(entry => entry.stockTake).flat().map(stockItem => stockItem.history).flat().map(history => history.changeFromLast))
+                let sold = stock.filter(x => x.name == item).map(entry => entry.stockTake).flat().map(stockItem => stockItem.history).flat().map(history => history.changeFromLastInKg)
+                // sum up all sales from the day
+                let daySales = 0;
+                for (let i = 0; i < sold.length; i++) {
+                    daySales += Number(Math.abs(sold[i]))
+                }
+                // display day sales 
+                salesPerDay[item] = daySales.toFixed(2);
+
+
             })
 
             daySales.push(salesPerDay)
         })
-        console.log(daySales)
+        // console.log(daySales)
 
         stock.map(item => item.stockTake.map(stockTake => stockTake.history.map(history => history.date)))
 

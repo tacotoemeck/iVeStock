@@ -38,21 +38,27 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
                 if (err) {
                     req.flash("error", "Something went wrong");
                 } else {
+
                     let today = new Date();
                     let dd = String(today.getDate()).padStart(2, '0');
                     let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
                     let yyyy = today.getFullYear();
 
                     History.create(stockItem, function (err, item) {
-                        stockItem.date = mm + '/' + dd + '/' + yyyy;
+
+                        let storingUnit = stockItem.storingUnit.match(/(?<=\>).+?(?=\<)/g)
+
+                        stockItem.storingUnitMaxWeight = storingUnit.toString();
+                        stockItem.volumeInKg = stockItem.storingUnitMaxWeight * (stockItem.volume / 10);
                         stockItem.action = "created";
-                        stockItem.history.push(stockItem);
-                        stockItem.markModified('history');
-                        stock.markModified('stockItem');
+
+                        stockItem.dateCreated = mm + '/' + dd + '/' + yyyy;
+                        console.log(stockItem)
                         stockItem.save();
+
                     });
                     stock.stockTake.push(stockItem);
-                    console.log(stock)
+
                     stock.save();
                     res.redirect('/stock/' + stock._id)
                 }
@@ -96,13 +102,27 @@ router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
             History.create(req.body.stock, function (err, stockItem) {
                 stockItem.date = mm + '/' + dd + '/' + yyyy;
                 stockItem.action = "update";
+                let storingUnit = stockItem.storingUnit.match(/(?<=\>).+?(?=\<)/g)
+                stockItem.storingUnitMaxWeight = storingUnit.toString();
+                stockItem.volumeInKg = stockItem.storingUnitMaxWeight * (stockItem.volume / 10);
+
                 stockItem.changeFromLast = -(Number(stock.volume) - Number(stockItem.volume));
+                stockItem.changeFromLastInKg = -(Number(stock.volumeInKg) - Number(stockItem.volumeInKg));
+
+                stock.action = stockItem.action
+                stock.volume = stockItem.volume;
+                stock.volumeInKg = stockItem.volumeInKg
+
                 stock.history.push(stockItem);
                 stockItem.save();
-                stock.save();
-                console.log(stock)
+
+                stock.history.push(stockItem);
+                stock.save()
 
             })
+
+            console.log(stock)
+            stock.save();
             res.redirect("/stock/" + req.params.id);
 
         }

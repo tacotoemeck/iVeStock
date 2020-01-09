@@ -11,13 +11,18 @@
                 <h5>Container :</h5>
 
                 <% stock.measures.forEach((measure) => { %>
+
                 <div class="form-check">
-                    <input class="form-check-input" type="radio" value="<%=measure.name%>" name='stock[storingUnit]'
+                    <input class="form-check-input" type="radio"
+                        value="<%= measure.name + "(kg" + ">" + measure.weight + "<)"%>" name='stock[storingUnit]'
                         id="defaultCheck1">
                     <label class="form-check-label" for="defaultCheck1">
                         <%=measure.name%>
                     </label>
                 </div>
+
+
+
                 <% }) %>
                 <hr class=" my-4">
                 <h5>Stock Level in a Container ( from 1 to 10 ) :</h5>

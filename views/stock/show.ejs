@@ -17,7 +17,9 @@
             <% let total = 0; %>
             <% for (let i = 0; i < stock.stockTake.length; i++) { %>
 
-            <% total+=Number((stock.measures.find(measure=> measure.name === stock.stockTake[i].storingUnit).weight * stock.stockTake[i].volume / 10).toFixed(2)) %>
+            <%if(stock.stockTake[i].action !== "waste" && stock.stockTake[i].action !== "sold") {%>
+            <% total+=Number(stock.stockTake[i].volumeInKg) %>
+            <% }; %>
             <% } %>
             <% %>
             <%= total %> kg
@@ -56,14 +58,14 @@
       </thead>
 
       <% stock.stockTake.forEach(collection => { %>
-      <% console.log(collection)%>
+
       <% if (location === collection.location && collection.action !== "sold" && collection.action !== "waste") { %>
 
       <tr>
         <th scope="col" class="stockTHStoring"> <%= collection.storingUnit %> </th>
         <th scope="col" class="stockTHWeight">
+          <%= collection.volumeInKg %>
 
-          <%= (stock.measures.find(measure=> measure.name === collection.storingUnit).weight * collection.volume / 10).toFixed(2) %>
           kg
         </th>
 
