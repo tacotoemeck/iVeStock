@@ -116,3 +116,64 @@ margin-top: -3px;
   font-size: 20px ;
 }
 
+/* vertical slider */
+#progress-bar-div {
+  text-align: center;
+
+}
+
+
+#progressBar {
+  width:300px;
+  height: 300px;
+  border-radius: 10px;
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  -ms-transform: rotate(-90deg);
+  -o-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+  -webkit-transform: rotate(-90deg);
+  transform-origin: center;
+  border-radius: 5%;
+}
+
+
+
+.slider-wrapper {
+  display: flex;
+  justify-content: center;
+}
+
+#progress-input {
+  width: 300px;
+ 
+}
+
+progress {
+  /* border: 10px solid #292b2c ;
+  border-radius: 10px; */
+  background: #5cb85c ;
+ 
+}
+
+progress {
+  color: #f7f7f7 ;
+}
+
+progress::-webkit-progress-value {
+  background: #f7f7f7 ;
+}
+
+progress::-moz-progress-bar {
+  background: lightcolor;
+  border-radius: 10px;
+}
+
+progress::-webkit-progress-value {
+  background: #5cb85c ;
+  border-radius: 10px;
+}
+
+progress::-webkit-progress-bar {
+  background: #f7f7f7 ;
+}

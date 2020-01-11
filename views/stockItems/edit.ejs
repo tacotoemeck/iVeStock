@@ -27,7 +27,37 @@
                     </label>
                 </div>
 
+                //
+                <div class="form-row">
+                    <div class="col-md-6">
+                        <h5>Container :</h5>
 
+                        <% stock.measures.forEach((measure) => { %>
+
+                        <div class="form-check btn-group btn-group-toggle" data-toggle="buttons"
+                            <%  if (measure.name + "(kg" + ">" + measure.weight + "<)" == stockItems.storingUnit) { %>
+                            style="padding-left: 0px;">
+
+                            <label class="btn btn-secondary">
+                                <input class="form-check-input" type="radio"
+                                    value="<%= measure.name + "(kg" + ">" + measure.weight + "<)"%>"
+                                    name='stock[storingUnit]'>
+                                <%=measure.name%>
+                            </label>
+                        </div>
+
+
+
+                        <% }) %>
+                    </div>
+                    <div class="col-md-6">
+                        <h5>Location :</h5>
+
+                        <div class="form-group" id="chuj">
+                            <input class="form-control" type="text" name='stock[location]' placeholder="Location">
+                        </div>
+                    </div>
+                </div>
 
 
                 <% }) %>
@@ -45,10 +75,22 @@
                     <input class="form-control" type="text" name='stock[location]' placeholder="Location"
                         value="<%=stockItems.location%>">
                 </div>
+
                 <div class="form-group hiddenForms">
-                    <input class="form-control" type="text" name='stock[action]' value="update">
+                    <input class="form-control" type="text" name='stock[action]' value="<%= stockItems.volume%>">
                 </div>
 
+                <div id="progress-bar-div">
+
+                    <progress id="progressBar" value="<%= stockItems.volume%>" max="1"></progress>
+
+
+                </div>
+
+                <div class="form-group slider-wrapper">
+                    <input id="progress-input" class="form-control" type="text" orient="vertical" name='stock[volume]'
+                        min="0" max="10" step="0.5" value="10">
+                </div>
 
 
                 <div class="form-group">
