@@ -5,97 +5,94 @@
 
 <div class="container">
     <div class="jumbotron">
-        <h1 style="text-align: center;"></h1>
+        <table class="table table-dark table-striped">
+            <thead>
+                <tr>
+                    <th class="locationTable table-dark table-location-title" colspan="3">
+                        UPDATE
+                    </th>
+                </tr>
+            </thead>
+        </table>
         <div style="width: 90%; margin: 40px auto;">
-
-
 
             <form action="/stock/<%= stock_id %>/stockUpdate/<%=stockItems._id%>?_method=PUT" method="POST">
 
 
-
-                <h5>Container :</h5>
-
-                <% items.measures.forEach((measure) => { %>
-                <div class="form-check">
-                    <input class="form-check-input" type="radio"
-                        <%  if (measure.name + "(kg" + ">" + measure.weight + "<)" == stockItems.storingUnit) { %>
-                        checked <% } %> value="<%= measure.name + "(kg" + ">" + measure.weight + "<)"%>"
-                        name='stock[storingUnit]' id="defaultCheck1">
-                    <label class="form-check-label" for="defaultCheck1">
-                        <%=measure.name%>
-                    </label>
-                </div>
-
-                //
                 <div class="form-row">
                     <div class="col-md-6">
                         <h5>Container :</h5>
-
-                        <% stock.measures.forEach((measure) => { %>
+                        <% items.measures.forEach((measure) => { %>
 
                         <div class="form-check btn-group btn-group-toggle" data-toggle="buttons"
-                            <%  if (measure.name + "(kg" + ">" + measure.weight + "<)" == stockItems.storingUnit) { %>
                             style="padding-left: 0px;">
 
                             <label class="btn btn-secondary">
                                 <input class="form-check-input" type="radio"
-                                    value="<%= measure.name + "(kg" + ">" + measure.weight + "<)"%>"
+                                    <%  if (measure.name + "(kg" + ">" + measure.weight + "<)" == stockItems.storingUnit) { %>
+                                    checked <% } %> value="<%= measure.name + "(kg" + ">" + measure.weight + "<)"%>"
                                     name='stock[storingUnit]'>
                                 <%=measure.name%>
                             </label>
                         </div>
-
-
-
                         <% }) %>
+
                     </div>
+
+
                     <div class="col-md-6">
                         <h5>Location :</h5>
 
                         <div class="form-group" id="chuj">
-                            <input class="form-control" type="text" name='stock[location]' placeholder="Location">
+                            <input class="form-control" type="text" name='stock[location]' placeholder="Location"
+                                value="<%=stockItems.location%>">
                         </div>
                     </div>
                 </div>
 
-
-                <% }) %>
                 <hr class=" my-4">
-                <h5>Stock Level in a Container ( from 1 to 10 ) :</h5>
+                <table class="table table-dark table-striped">
+                    <thead>
+                        <tr>
+                            <th class="locationTable table-dark table-location-title" colspan="3">
+                                LEVEL
+                            </th>
+                        </tr>
+                    </thead>
+                    <thead>
+                        <tr>
+                            <th scope="col" class="stockTHStoring">
+                                <div id="progress-bar-div">
+                                    <div class="progress" id="progressBar" style="height: 300px;">
+                                        <div class="progress-bar progress-bar-striped bg-success progress-bar-animated"
+                                            id="progress-display" role="progressbar"
+                                            style="width: <%= stockItems.volume * 10%>%; z-index: -1;"
+                                            aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
+                                            <span class="innerVal"><%= stockItems.volume%></span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </th>
 
-                <div class="form-group">
-                    <input class="form-control" type="text" name='stock[volume]'
-                        placeholder="use numbers only! - 1 : VERY LOW , 5 - HALF , 10 - FULL" min="0" max="10"
-                        step="0.5" value='<%= stockItems.volume%>'>
-                </div>
-                <h5>Location :</h5>
+                        </tr>
+                    </thead>
+                </table>
 
-                <div class="form-group">
-                    <input class="form-control" type="text" name='stock[location]' placeholder="Location"
-                        value="<%=stockItems.location%>">
+                <div class="form-group slider-wrapper hiddenForms">
+                    <input id="progress-input" class="form-control" type="text" name='stock[volume]'
+                        value='<%= stockItems.volume%>'>
                 </div>
 
                 <div class="form-group hiddenForms">
-                    <input class="form-control" type="text" name='stock[action]' value="<%= stockItems.volume%>">
-                </div>
-
-                <div id="progress-bar-div">
-
-                    <progress id="progressBar" value="<%= stockItems.volume%>" max="1"></progress>
-
-
-                </div>
-
-                <div class="form-group slider-wrapper">
-                    <input id="progress-input" class="form-control" type="text" orient="vertical" name='stock[volume]'
-                        min="0" max="10" step="0.5" value="10">
+                    <input class="form-control" type="text" name='stock[action]' value="update">
                 </div>
 
 
                 <div class="form-group">
-                    <button class="btn btn-lg btn-default btn-block btn-primary">Submit!</button>
+                    <button class="btn btn-lg btn-default btn-block btn-success submitBtns"
+                        style="margin-top: 25px;">Submit!</button>
                 </div>
+
             </form>
             <a href="/stock">Go Back</a>
 
@@ -103,6 +100,6 @@
     </div>
 
 
-
+    <script src='/JS/progress.js'></script>
 
     <%- include('../partials/footer') %>

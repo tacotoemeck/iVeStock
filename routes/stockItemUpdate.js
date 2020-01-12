@@ -79,6 +79,7 @@ router.get("/:stockTake_id/edit", middleware.isLoggedIn, function (req, res) {
         } else {
             Stock.findById(req.params.id).populate("measures").populate("stockTake").populate("history").exec(function (err, item) {
                 res.render("stockItems/edit", { stockItems: stockItem, items: item, stock_id: req.params.id, stock: req.params });
+
             })
 
 
