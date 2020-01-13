@@ -76,12 +76,18 @@
 
                         </tr>
                     </thead>
+                    <thead>
+                        <tr>
+                            <th>
+                                <div class="form-group slider-wrapper">
+                                    <input id="progress-input" class="form-control" type="range" name='stock[volume]'
+                                        min="0.1" max="10" step="0.1" value='<%= stockItems.volume%>'>
+                                </div>
+                            </th>
+                        </tr>
+                    </thead>
                 </table>
 
-                <div class="form-group slider-wrapper hiddenForms">
-                    <input id="progress-input" class="form-control" type="text" name='stock[volume]'
-                        value='<%= stockItems.volume%>'>
-                </div>
 
                 <div class="form-group hiddenForms">
                     <input class="form-control" type="text" name='stock[action]' value="update">

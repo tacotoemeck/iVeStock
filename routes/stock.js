@@ -8,10 +8,17 @@ const express = require('express'),
 
 
 router.get('/', middleware.isLoggedIn, (req, res) => {
-	Stock.find({}, (err, allStock) => {
+	Stock.find({}).populate("stockTake").exec(function (err, allStock) {
 		if (err) {
 			console.log(err)
 		} else {
+			// // get all stock items in an array
+			// let stockItems = [];
+			// // let locations = [];
+			// allStock.forEach(stock => stock.stockTake.map(stockTake => stockItems.push(stockTake)))
+			// let locations = new Set(stockItems.map(item => item.location))
+			// console.log(locations)
+			// iterate through stockItems array and get individual locations
 			res.render('stock/index', { stock: allStock });
 		}
 	});
@@ -31,10 +38,10 @@ router.post('/', middleware.isLoggedIn, function (req, res) {
 	let name = req.body.name;
 	let category = req.body.category;
 	let icon = req.body.icon;
-	let amount = req.body.amount;
-	let description = req.body.description;
-	let measure = req.body.measure;
-	let stockTake = req.body.stockTake;
+	// let amount = req.body.amount;
+	// let description = req.body.description;
+	// let measure = req.body.measure;
+	// let stockTake = req.body.stockTake;
 
 	let author = {
 		id: req.user._id,
@@ -47,7 +54,6 @@ router.post('/', middleware.isLoggedIn, function (req, res) {
 		if (err) {
 			console.log(err);
 		} else {
-			console.log(newStockItem)
 			// 			redirect back to stock page
 			res.redirect('stock');
 		}
