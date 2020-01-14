@@ -53,7 +53,7 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
                         stockItem.action = "created";
 
                         stockItem.dateCreated = mm + '/' + dd + '/' + yyyy;
-                        console.log(stockItem)
+
                         stockItem.save();
 
                     });
@@ -81,14 +81,20 @@ router.get("/:stockTake_id/edit", middleware.isLoggedIn, function (req, res) {
                 res.render("stockItems/edit", { stockItems: stockItem, items: item, stock_id: req.params.id, stock: req.params });
 
             })
-
-
         }
     });
 });
 
 // Update route
 router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
+
+    let doneInBulk = false;
+    console.log(doneInBulk)
+    console.log(req.body)
+    console.log(req.body.stock.bulk)
+    if (req.body.stock.bulk == 'true') {
+        doneInBulk = true;
+    }
 
     StockUpdate.findByIdAndUpdate(req.params.stockTake_id, req.body.stock).populate("history").exec(function (err, stock) {
 
@@ -117,15 +123,15 @@ router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
                 stock.history.push(stockItem);
                 stockItem.save();
                 stock.save()
-                console.log(stock)
+
             })
-
-            // console.log(stock)
-            // stock.save();
-            res.redirect("/stock/" + req.params.id);
-
+            console.log(doneInBulk)
+            if (doneInBulk !== true) {
+                res.redirect("/stock/" + req.params.id);
+            }
         }
     });
+
 });
 
 // Destroy route

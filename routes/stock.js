@@ -68,7 +68,7 @@ router.get('/:id', middleware.isLoggedIn, function (req, res) {
 		if (err) {
 			console.log(err)
 		} else {
-			console.log(foundStockItem)
+
 			// 	render show template with that item
 			res.render('stock/show', { stock: foundStockItem })
 		}
