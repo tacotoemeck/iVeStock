@@ -4,7 +4,7 @@ const stockItemSchema = new mongoose.Schema({
     dateCreated: String,
     volume: String,
     volumeInKg: String,
-    storingUnit: String,
+    storingUnit: { type: String, required: [true, "Where did you plan to store it... on the floor? You need to select a container first you silly goose :D"] },
     storingUnitMaxWeight: String,
     location: String,
     action: String,

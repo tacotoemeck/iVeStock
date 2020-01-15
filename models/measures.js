@@ -1,8 +1,8 @@
 const mongoose = require("mongoose");
- 
+
 const measureSchema = new mongoose.Schema({
-    name: String,
-    weight: String
+    name: { type: String, required: true },
+    weight: { type: String, required: true }
 });
- 
+
 module.exports = mongoose.model("Measure", measureSchema);

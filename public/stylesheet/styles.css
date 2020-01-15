@@ -1,10 +1,21 @@
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
 body {
   /* background-image: url("https://images.unsplash.com/photo-1465176728568-7da7e336b1e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"); */
-  background-color: #292b2c;
+  background: #ECE9E6;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #FFFFFF, #ECE9E6);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #FFFFFF, #ECE9E6); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
+}
+
+/* fonts */
+
+.archivo {
+  font-family: 'Archivo Black', sans-serif;
 }
 
 .jumbotron {
-  background-color: #4B515D;
+  background-color: transparent;
 }
 
 .btn-xs {
@@ -82,8 +93,9 @@ margin-top: -3px;
 /* ============= h elements==== */
 
 .stock-headers {
-  text-align: center;
-  margin-bottom: 50px;
+  display: flex;
+  justify-content: space-between;
+  /* margin-bottom: 50px; */
 }
 
 /* ========= collapsibles ========== */
@@ -108,13 +120,15 @@ margin-top: -3px;
 
   display: none;
   overflow: hidden;
-
 }
 
 .table-location-title {
   text-align: center;
   font-size: 20px ;
+
 }
+
+
 
 /* vertical slider */
 #progress-bar-div {
@@ -173,11 +187,7 @@ font-size: 3vh;
   margin: 40px auto;
 }
 
-/* fonts */
 
-.archivo {
-  font-family: 'Archivo Black', sans-serif;
-}
 
 /* range slider */
 input[type=range] {
@@ -196,7 +206,7 @@ input[type=range]::-webkit-slider-runnable-track {
   cursor: pointer;
   animate: 0.2s;
   box-shadow: 1px 1px 1px #000000;
-  background: #74A9D8;
+  background: #5cb85c;
   border-radius: 1px;
   border: 0px solid #010101;
 }
@@ -212,7 +222,7 @@ input[type=range]::-webkit-slider-thumb {
   margin-top: -8px;
 }
 input[type=range]:focus::-webkit-slider-runnable-track {
-  background: #74A9D8;
+  background: #5cb85c;
 }
 input[type=range]::-moz-range-track {
   width: 100%;
@@ -220,7 +230,7 @@ input[type=range]::-moz-range-track {
   cursor: pointer;
   animate: 0.2s;
   box-shadow: 1px 1px 1px #000000;
-  background: #74A9D8;
+  background: #5cb85c;
   border-radius: 1px;
   border: 0px solid #010101;
 }
@@ -230,7 +240,7 @@ input[type=range]::-moz-range-thumb {
   height: 26px;
   width: 26px;
   border-radius: 15px;
-  background: #FFFFFF;
+  background: unset;
   cursor: pointer;
 }
 input[type=range]::-ms-track {
@@ -238,18 +248,18 @@ input[type=range]::-ms-track {
   height: 11px;
   cursor: pointer;
   animate: 0.2s;
-  background: transparent;
+  background: unset;
   border-color: transparent;
   color: transparent;
 }
 input[type=range]::-ms-fill-lower {
-  background: #74A9D8;
+  background: #5cb85c;
   border: 0px solid #010101;
   border-radius: 2px;
   box-shadow: 1px 1px 1px #000000;
 }
 input[type=range]::-ms-fill-upper {
-  background: #74A9D8;
+  background: #5cb85c;
   border: 0px solid #010101;
   border-radius: 2px;
   box-shadow: 1px 1px 1px #000000;
@@ -261,14 +271,19 @@ input[type=range]::-ms-thumb {
   height: 26px;
   width: 26px;
   border-radius: 15px;
-  background: #FFFFFF;
+  background: unset;
   cursor: pointer;
 }
+input[type=range]:focus {
+  background-color: unset;
+}
 input[type=range]:focus::-ms-fill-lower {
-  background: #74A9D8;
+  background: #5cb85c;
+  background-color: unset;
 }
 input[type=range]:focus::-ms-fill-upper {
-  background: #74A9D8;
+  background-color: unset;
+  background: #5cb85c;
 }
 /* drop down multi action form */
 .dropdown-submenu {
@@ -319,6 +334,18 @@ input[type=range]:focus::-ms-fill-upper {
   border-radius: 6px 0 6px 6px;
 }
 
+/* ====checkboxes====== */
+
+input[type=checkbox]
+{
+  /* Double-sized Checkboxes */
+  -ms-transform: scale(2); /* IE */
+  -moz-transform: scale(2); /* FF */
+  -webkit-transform: scale(2); /* Safari and Chrome */
+  -o-transform: scale(2); /* Opera */
+  padding: 10px;
+}
+
 
 /*
 ####################################################
@@ -358,4 +385,4 @@ Bootstrap 4 breakpoints
   .stock-headers {font-size: 48px;}
 }
 
-/*
+/*  */

@@ -1,9 +1,9 @@
 const mongoose = require('mongoose');
 
 const stockSchema = new mongoose.Schema({
-	name: String,
+	name: { type: String, required: [true, "It needs to be names silly!"] },
 	icon: String,
-	category: String,
+	category: { type: String, required: [true, "Choose a category first!"] },
 	amount: String,
 	description: String,
 	measures: [

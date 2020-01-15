@@ -3,17 +3,18 @@
 <p style="visibility: hidden; position: absolute;" id="stockID"><%= stock._id %></p>
 <div class="container ">
   <div class="jumbotron ">
-    <h2 class="display-4 stock-headers"><%= stock.icon %><%= stock.name %><%= stock.icon %></h2>
+    <h2 class="display-4 stock-headers archivo"><%= stock.name %><span style="font-size: 10vh"><%= stock.icon %></span>
+    </h2>
     <a href="/stock/<%= stock._id %>/stockUpdate/new" class="btn btn-lg btn-success btn-block">ADD
       NEW STOCK</a>
 
 
     <%  %>
     <hr class="my-4">
-    <table class="table table-dark">
+    <table class="table ">
       <thead>
         <tr>
-          <th scope="col">Currently you've:
+          <th scope="col">
 
             <% let total = 0; %>
             <% for (let i = 0; i < stock.stockTake.length; i++) { %>
@@ -24,7 +25,7 @@
             <% } %>
             <% %>
             <%= total.toFixed(2) %> kg
-            of <%= stock.name %>
+
 
           </th>
 
@@ -32,38 +33,32 @@
       </thead>
 
     </table>
-    <h5>OF WHICH:</h5>
-    <% let locations = []; %>
-    <% stock.stockTake.forEach(collection => { %>
-    <% locations.push(collection.location) %>
-    <% }) %>
 
+    <% locations.forEach(location => { %>
 
-    <% let locationsSet = new Set(locations); %>
-
-    <% locationsSet.forEach(location => { %>
-
-    <table class="table table-dark table-striped table-responsive">
+    <table class="table table-responsive">
       <thead>
         <tr>
-          <th class="locationTable table-dark table-location-title" colspan="3">
+          <th class="locationTable table-location-title" colspan="3">
             <%=location.toUpperCase() || 'LOCATION UNASSIGNED' %>
           </th>
         </tr>
       </thead>
 
 
-      <form id="multi-action-form">
+      <form class="multi-action-form">
         <% stock.stockTake.forEach(collection => { %>
 
         <% if (location === collection.location && collection.action !== "sold" && collection.action !== "waste") { %>
 
         <tr>
           <th scope="col" class="stockTHStoring">
-            <input class="form-check-input checkedOnes" type="checkbox" value="<%=collection._id%>"
-              style="margin-left: 5px;">
-            <label class="form-check-label" style="margin-left: 20px;"><%= collection.storingUnit %></label>
-
+            <div class="custom-control custom-checkbox">
+              <input class="form-check-input checkedOnes" type="checkbox"
+                value='{"id":"<%=collection._id%>", "location":"<%=collection.location%>", "storingUnit":"<%=collection.storingUnit%>", "volume":"<%=collection.volume%>", "volumeInKg":"<%=collection.volumeInKg%>"}'
+                style="font-size: 15em;">
+              <label class="form-check-label" style="margin-left: 20px;"><%= collection.storingUnit %></label>
+            </div>
           </th>
           <th scope="col" class="stockTHWeight">
             <%= Number(collection.volumeInKg).toFixed(2) %>
@@ -132,35 +127,43 @@
 
           </th>
         </tr>
-
-
+        multi-action-form
         <% } %>
 
         <% }); %>
+        <thead>
+          <tr>
+            <th scope="col" class="stockTHStoring">
+              <div class="dropdown">
+                <button class="btn btn-xs btn-secondary dropdown-toggle multiSubmit" type="button"
+                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                  BULK ACTION
+                </button>
+                <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                  <li class="dropdown-item"><button class="btn btn-xs btn-danger submitSold" id="">MARK ALL
+                      SOLD</button></li>
+                  <li class="dropdown-item"><button class="btn btn-xs btn-warning submitWaste" id="">MARK ALL
+                      WASTE</button></li>
+                  <li class="dropdown-divider"></li>
+                  <li class="dropdown-submenu">
+                    <a class="dropdown-item" tabindex="-1" href="#">Move location to:</a>
+                    <ul class="dropdown-menu">
+                      <% locations.forEach(location => { %>
+                      <li class="dropdown-item"><button
+                          class="btn btn-xs submitLocation"><%=location || 'LOCATION UNASSIGNED' %></button></li>
+                      <% }); %>
 
+                    </ul>
+                  </li>
+                </ul>
+              </div>
+            </th>
+          </tr>
+        </thead>
     </table>
     <%}); %>
 
-    <div class="dropdown" id="multiSubmit">
-      <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown"
-        aria-haspopup="true" aria-expanded="false">
-        BULK ACTION
-      </button>
-      <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-        <li class="dropdown-item"><a href="#" id="submit">MARK ALL SOLD</a></li>
-        <li class="dropdown-item"><a href="#">MARK ALL WASTE</a></li>
-        <li class="dropdown-divider"></li>
-        <li class="dropdown-submenu">
-          <a class="dropdown-item" tabindex="-1" href="#">Move location to:</a>
-          <ul class="dropdown-menu">
-            <% locationsSet.forEach(location => { %>
-            <li class="dropdown-item"><a href="#"><%=location || 'LOCATION UNASSIGNED' %></a></li>
-            <% }); %>
 
-          </ul>
-        </li>
-      </ul>
-    </div>
 
 
 
@@ -168,7 +171,7 @@
     <hr class="my-4">
     <button class="collapsible btn btn-block btn-warning">ADD/EDIT STORAGE UNITS:</button>
     <div class="contentCollapsible">
-      <table class="table table-dark">
+      <table class="table ">
         <thead>
           <tr>
             <th scope="col">Storing Unit:</th>

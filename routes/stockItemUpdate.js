@@ -18,6 +18,7 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
             req.flash("error", "Item not found");
             res.redirect("back");
         } else {
+
             res.render("stockItems/show", { stock: stock });
         }
     });
@@ -36,7 +37,9 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
             StockUpdate.create(req.body.stock, function (err, stockItem) {
 
                 if (err) {
-                    req.flash("error", "Something went wrong");
+                    console.log(err)
+                    req.flash("error", err.errors.storingUnit.message);
+                    return res.redirect("back");
                 } else {
 
                     let today = new Date();
@@ -89,15 +92,12 @@ router.get("/:stockTake_id/edit", middleware.isLoggedIn, function (req, res) {
 router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
 
     let doneInBulk = false;
-    console.log(doneInBulk)
-    console.log(req.body)
-    console.log(req.body.stock.bulk)
     if (req.body.stock.bulk == 'true') {
         doneInBulk = true;
     }
 
     StockUpdate.findByIdAndUpdate(req.params.stockTake_id, req.body.stock).populate("history").exec(function (err, stock) {
-
+        console.log(req.body)
         if (err) {
             req.flash("error", "Item not found");
             res.redirect("back");
@@ -108,24 +108,18 @@ router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
             let yyyy = today.getFullYear();
             History.create(req.body.stock, function (err, stockItem) {
                 stockItem.date = mm + '/' + dd + '/' + yyyy;
-
                 let storingUnit = stockItem.storingUnit.match(/(?<=\>).+?(?=\<)/g)
                 stockItem.storingUnitMaxWeight = storingUnit.toString();
                 stockItem.volumeInKg = stockItem.storingUnitMaxWeight * (stockItem.volume / 10);
-
                 stockItem.changeFromLast = -(Number(stock.volume) - Number(stockItem.volume));
                 stockItem.changeFromLastInKg = -(Number(stock.volumeInKg) - Number(stockItem.volumeInKg));
-
                 stock.action = stockItem.action
                 stock.volume = stockItem.volume;
                 stock.volumeInKg = stockItem.volumeInKg
-
                 stock.history.push(stockItem);
                 stockItem.save();
                 stock.save()
-
             })
-            console.log(doneInBulk)
             if (doneInBulk !== true) {
                 res.redirect("/stock/" + req.params.id);
             }

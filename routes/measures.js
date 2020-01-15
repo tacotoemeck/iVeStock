@@ -14,7 +14,6 @@ router.get("/new", middleware.isLoggedIn, function (req, res) {
         if (err) {
             req.flash("error", "Item not found");
         } else {
-
             res.render("measures/new", { stock: stock });
         }
     });
@@ -33,6 +32,7 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
                 if (err) {
                     req.flash("error", "Something went wrong");
                 } else {
+                    req.flash("success", "Getting there! You've added a stock item. Now You can add stock!");
                     stock.measures.push(measure);
                     stock.save();
                     res.redirect('/stock/' + stock._id)

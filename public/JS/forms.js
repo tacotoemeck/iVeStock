@@ -1,19 +1,25 @@
 const stockId = $('#stockID').html();
-console.log(stockId)
+
 
 let selected = new Array();
 
 
 
 // get an array of selected elements
-$("#multiSubmit").click(function () {
+
+$(".multiSubmit").click(function () {
+
+    selected = [];
     $(document).ready(function () {
+
         $("input[type=checkbox]:checked").each(function () {
-            selected.push($(this).val());
+            let obj = JSON.parse($(this).val());
+            selected.push(obj)
         })
         console.log(selected);
     });
 });
+
 
 
 // dropdown menu 
@@ -26,34 +32,52 @@ $(document).ready(function () {
     });
 });
 
+// all items sold
 
-// update to sold
-// let data = {
-//     body: {
-//         stock: {
-//             storingUnit: 'Gastronome 1/6 Deep(kg>2<)',
-//             location: 'Kitchen',
-//             volume: '1.1',
-//             action: 'update'
-//         }
-//     }
-// }
+$('.submitSold').click(function () {
+    updateMany('sold', '0')
+})
 
+// all items waste
 
+$('.submitWaste').click(function () {
+    updateMany('waste', '0')
+})
 
-
-// let json = JSON.stringify(data);
-
-$('#submit').click(function () {
-    selected.forEach(id => {
-        var updateUrl = '/stock/' + stockId + '/stockUpdate/' + id;
+// all move location
+$('.submitLocation').click(function () {
+    console.log("clicked")
+    selected.forEach(item => {
+        var updateUrl = '/stock/' + stockId + '/stockUpdate/' + item.id;
         var stock = {
             stock: {
-                storingUnit: 'Gastronome 1/6 Deep(kg>2<)',
-                location: 'Kitchen',
-                volume: '0',
-                action: 'sold',
-                bulk: true
+                storingUnit: item.storingUnit,
+                location: this.innerHTML,
+                volume: item.volume,
+                action: item.action,
+                bulk: item.bulk
+            }
+        }
+        $.ajax({
+            method: 'PUT',
+            url: updateUrl,
+            data: stock
+        })
+            .then(location.reload(true))
+    })
+})
+
+
+function updateMany(action, volume) {
+    selected.forEach(item => {
+        var updateUrl = '/stock/' + stockId + '/stockUpdate/' + item.id;
+        var stock = {
+            stock: {
+                storingUnit: item.storingUnit,
+                location: item.location,
+                volume: volume,
+                action: action,
+                bulk: item.bulk
             }
         }
         $.ajax({
@@ -64,8 +88,5 @@ $('#submit').click(function () {
             .then(location.reload(true))
     })
 
-})
-
-
-
+}
 
