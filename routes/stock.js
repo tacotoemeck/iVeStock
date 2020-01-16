@@ -12,7 +12,7 @@ router.get('/', middleware.isLoggedIn, (req, res) => {
 		if (err) {
 			console.log(err)
 		} else {
-			res.render('stock/index', { stock: allStock });
+			res.render('stock/index', { stock: allStock, currentUser: req.user });
 		}
 	});
 });

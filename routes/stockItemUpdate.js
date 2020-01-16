@@ -7,6 +7,13 @@ const express = require('express'),
     passport = require('passport'),
     router = express.Router({ mergeParams: true });
 
+// global variables
+
+let today = new Date();
+let dd = String(today.getDate()).padStart(2, '0');
+let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
+let yyyy = today.getFullYear();
+
 
 router.use(express.static(__dirname + '/public'));
 
@@ -18,7 +25,6 @@ router.get("/new", middleware.isLoggedIn, (req, res) => {
             req.flash("error", "Item not found");
             res.redirect("back");
         } else {
-
             res.render("stockItems/show", { stock: stock });
         }
     });
@@ -41,27 +47,15 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
                     req.flash("error", err.errors.storingUnit.message);
                     return res.redirect("back");
                 } else {
-
-                    let today = new Date();
-                    let dd = String(today.getDate()).padStart(2, '0');
-                    let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-                    let yyyy = today.getFullYear();
-
                     History.create(stockItem, function (err, item) {
-
                         let storingUnit = stockItem.storingUnit.match(/(?<=\>).+?(?=\<)/g)
-
                         stockItem.storingUnitMaxWeight = storingUnit.toString();
                         stockItem.volumeInKg = stockItem.storingUnitMaxWeight * (stockItem.volume / 10);
                         stockItem.action = "created";
-
                         stockItem.dateCreated = mm + '/' + dd + '/' + yyyy;
-
                         stockItem.save();
-
                     });
                     stock.stockTake.push(stockItem);
-
                     stock.save();
                     res.redirect('/stock/' + stock._id)
                 }
@@ -82,7 +76,6 @@ router.get("/:stockTake_id/edit", middleware.isLoggedIn, function (req, res) {
         } else {
             Stock.findById(req.params.id).populate("measures").populate("stockTake").populate("history").exec(function (err, item) {
                 res.render("stockItems/edit", { stockItems: stockItem, items: item, stock_id: req.params.id, stock: req.params });
-
             })
         }
     });
@@ -95,17 +88,12 @@ router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
     if (req.body.stock.bulk == 'true') {
         doneInBulk = true;
     }
-
     StockUpdate.findByIdAndUpdate(req.params.stockTake_id, req.body.stock).populate("history").exec(function (err, stock) {
         console.log(req.body)
         if (err) {
             req.flash("error", "Item not found");
             res.redirect("back");
         } else {
-            let today = new Date();
-            let dd = String(today.getDate()).padStart(2, '0');
-            let mm = String(today.getMonth() + 1).padStart(2, '0'); //January is 0!
-            let yyyy = today.getFullYear();
             History.create(req.body.stock, function (err, stockItem) {
                 stockItem.date = mm + '/' + dd + '/' + yyyy;
                 let storingUnit = stockItem.storingUnit.match(/(?<=\>).+?(?=\<)/g)
@@ -130,8 +118,6 @@ router.put("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
 
 // Destroy route
 router.delete("/:stockTake_id", middleware.isLoggedIn, function (req, res) {
-
-
     StockUpdate.findByIdAndRemove(req.params.stockTake_id, function (err) {
         if (err) {
             req.flash("error", "Item not found");

@@ -21,7 +21,7 @@
 
 					<% if ( stock.category === "Cooked") { %>
 
-					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-info">
+					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-outline-info">
 						<span style="font-size: 40px;"><%= stock.icon %></span><br />
 						<%= stock.name%> <br>
 					</a>
@@ -50,7 +50,7 @@
 
 					<% if ( stock.category === "Fresh") { %>
 
-					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-success">
+					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-outline-success">
 						<span style="font-size: 40px;"><%= stock.icon %></span><br />
 						<%= stock.name%> <br>
 					</a>
@@ -80,7 +80,7 @@
 
 					<% if ( stock.category === "Packaging") { %>
 
-					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-secondary">
+					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-outline-secondary">
 						<span style="font-size: 40px;"><%= stock.icon %></span><br />
 						<%= stock.name%> <br>
 					</a>
@@ -95,7 +95,7 @@
 			<a href="/stock/new" class="btn btn-large btn-warning btn-block">ADD NEW STOCK ITEM</a>
 		</p>
 		<hr class="my-4">
-		<a href="<%=/home/%>" class="btn btn-secondary btn-block">Go Back</a>
+		<a href="<%=/home/%>" class="btn btn-outline-secondary btn-block">Go Back</a>
 	</div>
 </div>
 

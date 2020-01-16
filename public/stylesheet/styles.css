@@ -15,8 +15,20 @@ body {
 }
 
 .jumbotron {
-  background-color: transparent;
+  margin-top: 100px;
+  background: #C9D6FF;  /* fallback for old browsers */
+  background: -webkit-linear-gradient(to right, #E2E2E2, #C9D6FF);  /* Chrome 10-25, Safari 5.1-6 */
+  background: linear-gradient(to right, #E2E2E2, #C9D6FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+  
 }
+
+/* tables */
+
+tr {
+  border-top: none;
+}
+
+
 
 .btn-xs {
     padding: .25rem .4rem;
@@ -359,10 +371,11 @@ Bootstrap 4 breakpoints
 */
 /* Small devices (landscape phones, 544px and up) */
 @media (max-width: 544px) {  
+  
   .stock-headers {font-size: 16px;}
   .stockTHstoring {font-size: 9px;}
   .container {padding: 0;}
-  .jumbotron {padding: 0;}
+  .jumbotron {padding: 0; margin-top: 0px}
   .table-responsive {font-size: 10px;}
   .stockTHWeight {visibility: hidden; position: absolute;}
   .categoryBtns { font-size: 16px;}

@@ -4,7 +4,6 @@
 const express = require('express'),
 	mongoose = require('mongoose'),
 	flash = require('connect-flash'),
-	passport = require('passport'),
 	path = require('path'),
 	bodyParser = require('body-parser'),
 	User = require('./models/user'),
@@ -14,6 +13,7 @@ const express = require('express'),
 	History = require("./models/history"),
 	Measure = require("./models/measures"),
 	StockUpdate = require("./models/stockItemUpdate"),
+	passport = require('passport'),
 	passportLocalMongose = require('passport-local-mongoose'),
 	seedDB = require('./seeds'),
 	middleware = require('./middleware');
@@ -72,6 +72,11 @@ app.use(function (req, res, next) {
 	res.locals.error = req.flash("error");
 	res.locals.success = req.flash("success");
 	next()
+});
+
+app.use((req, res, next) => {
+	res.locals.currentUser = req.user;
+	next();
 });
 
 app.get('/home', middleware.isLoggedIn, (req, res) => {
