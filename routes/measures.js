@@ -28,6 +28,7 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
             res.redirect("/stock/");
         } else {
             // Add a new storage method 
+            console.log(req.body.measure)
             Measure.create(req.body.measure, function (err, measure) {
                 if (err) {
                     req.flash("error", "Something went wrong");

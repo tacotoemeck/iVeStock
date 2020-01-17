@@ -5,8 +5,10 @@ const progressBarDisplay = document.getElementById('progress-display');
 const progressBarVal = document.querySelector('.innerVal');
 const progressBarWrapper = document.getElementById('progress-bar-div');
 
-const slider = document.getElementById('progress-input');
-const manualVol = document.getElementById('volumeValueManual');
+const slider = document.querySelector('.progress-input');
+const sliderSingle = document.querySelector('.progress-input-single-slider');
+const manualVol = document.querySelector('.volumeValueManual');
+const manualVolSingle = document.querySelector('.progress-input-single');
 
 var rect = progressBar.getBoundingClientRect();
 
@@ -27,7 +29,6 @@ progressBar.addEventListener('click', function (e) {
 });
 
 slider.addEventListener('input', () => {
-    console.log(slider.value)
     progressBarDisplay.style.width = slider.value * 10 + '%';
     progressBarVal.innerHTML = slider.value;
 
@@ -35,12 +36,22 @@ slider.addEventListener('input', () => {
 });
 
 manualVol.addEventListener('input', () => {
-    console.log(manualVol.value)
     progressBarDisplay.style.width = manualVol.value * 10 + '%';
     progressBarVal.innerHTML = manualVol.value;
     slider.value = manualVol.value;
 
 });
+
+sliderSingle.addEventListener('input', () => {
+    manualVolSingle.value = Number(sliderSingle.value);
+});
+
+manualVolSingle.addEventListener('input', () => {
+    sliderSingle.value = manualVolSingle.value;
+
+});
+
+
 
 // progressBar.style.height = "500px"
 

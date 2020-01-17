@@ -17,16 +17,32 @@
           <th scope="col" class="archivo h1 text-right">
 
             <% let total = 0; %>
-            <% for (let i = 0; i < stock.stockTake.length; i++) { %>
 
+            <% if ( stock.volumeType === "weight" ) { %>
+            <% for (let i = 0; i < stock.stockTake.length; i++) { %>
+            <%console.log(stock.stockTake[i])%>
             <%if(stock.stockTake[i].action !== "waste" && stock.stockTake[i].action !== "sold") {%>
             <% total+=Number(stock.stockTake[i].volumeInKg) %>
             <% }; %>
             <% } %>
-            <% %>
             <%= total.toFixed(2) %> kg
-
-
+            <%}%>
+            <!-- logic for weight will go here -->
+            <% if ( stock.volumeType === "unit" ) { %>
+            <% for (let i = 0; i < stock.stockTake.length; i++) { %>
+            <%console.log(stock.stockTake[i])%>
+            <%if(stock.stockTake[i].action !== "waste" && stock.stockTake[i].action !== "sold") {%>
+            <%if(stock.stockTake[i].countMethod === 'boxORweight') { %>
+            <% total+=Number(stock.stockTake[i].volumeInKg) %>
+            <%} %>
+            <%if(stock.stockTake[i].countMethod === 'singleItem') { %>
+            <% total+=Number(stock.stockTake[i].volume) %>
+            <% }; %>
+            <% } %>
+            <% } %>
+            <%= total.toFixed(0) %> units
+            <%}%>
+           
           </th>
 
         </tr>
@@ -35,182 +51,194 @@
     </table>
 
     <% locations.forEach(location => { %>
-    <div class="table-responsive">
-      <table class="table table-striped">
-        <thead>
-          <tr>
-            <th class="locationTable table-location-title" colspan="3">
-              <%=location.toUpperCase() || 'LOCATION UNASSIGNED' %>
-            </th>
-          </tr>
-        </thead>
+            <div class="table-responsive">
+              <table class="table table-striped">
+                <thead>
+                  <tr>
+                    <th class="locationTable table-location-title" colspan="3">
+                      <%=location.toUpperCase() || 'LOCATION UNASSIGNED' %>
+                    </th>
+                  </tr>
+                </thead>
 
 
 
-        <% stock.stockTake.forEach(collection => { %>
+                <% stock.stockTake.forEach(collection => { %>
 
-        <tbody>
-          <% if (location === collection.location && collection.action !== "sold" && collection.action !== "waste") { %>
+                <tbody>
+                  <% if (location === collection.location && collection.action !== "sold" && collection.action !== "waste") { %>
 
-          <tr>
+                  <tr>
 
-            <th scope="col" class="stockTHStoring">
-              <div class="custom-control custom-checkbox">
+                    <th scope="col" class="stockTHStoring">
+                      <div class="custom-control custom-checkbox">
 
-                <input class="form-check-input checkedOnes" type="checkbox"
-                  value='{"id":"<%=collection._id%>", "location":"<%=collection.location%>", "storingUnit":"<%=collection.storingUnit%>", "volume":"<%=collection.volume%>", "volumeInKg":"<%=collection.volumeInKg%>"}'
-                  style="font-size: 15em;">
-                <label class="form-check-label" style="margin-left: 20px;"><%= collection.storingUnit %></label>
-              </div>
-            </th>
+                        <input class="form-check-input checkedOnes" type="checkbox"
+                          value='{"id":"<%=collection._id%>", "location":"<%=collection.location%>", "storingUnit":"<%=collection.storingUnit%>", "volume":"<%=collection.volume%>", "volumeInKg":"<%=collection.volumeInKg%>"}'
+                          style="font-size: 15em;">
+                        <label class="form-check-label" style="margin-left: 20px;"><%= collection.storingUnit %></label>
+                      </div>
+                    </th>
+                    <%console.log(collection)%>
+                    <th scope="col" class="stockTHWeight">
+                      <!-- if items is measured in kg -->
+                      <% if (stock.volumeType === "weight") { %>
+                      <%= Number(collection.volumeInKg).toFixed(2) %> kg
+                      <% } %>
+                      <!-- if items is measured in units -->
+                      <% if (stock.volumeType === "unit") { %>
+                      <% if(collection.countMethod === "boxORweight") { %>
+                      <%= Number(collection.volumeInKg) %> units
+                      <% } %>
+                      <% if(collection.countMethod === "singleItem") { %>
+                      <%= Number(collection.volume) %> unit
+                      <% } %>
+                      <% } %>
 
-            <th scope="col" class="stockTHWeight">
-              <%= Number(collection.volumeInKg).toFixed(2) %>
-              kg
-            </th>
+                    </th>
 
-            <th scope="col" class="currentStockButtons">
-              <a href="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>/edit"
-                class=" btn  btn-outline-success updateBtn stock-remove-buttons">UPDATE</a>
+                    <th scope="col" class="currentStockButtons">
+                      <a href="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>/edit"
+                        class=" btn  btn-outline-success updateBtn stock-remove-buttons">UPDATE</a>
 
-              <form action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=PUT" method="POST">
-
-
-                <div class="form-group hiddenForms">
-                  <input class="form-control" type="text" name='stock[storingUnit]'
-                    value='<%= collection.storingUnit%>'>
-                </div>
-
-                <div class="form-group hiddenForms">
-                  <input class="form-control" type="text" name='stock[volume]' value='0'>
-                </div>
-
-                <div class="form-group hiddenForms">
-                  <input class="form-control" type="text" name='stock[location]' value="<%=collection.location%>">
-                </div>
-
-                <div class="form-group hiddenForms">
-                  <input class="form-control" type="text" name='stock[action]' value="sold">
-                </div>
-
-                <div class="form-group hiddenForms">
-                  <input class="form-control" type="text" name='stock[changeFromLast]' value="0">
-                </div>
-
-                <div class="form-group">
-                  <button class="btn  btn-outline-primary stock-remove-buttons">MARK AS SOLD</button>
-                </div>
-              </form>
-
-              <form action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=PUT" method="POST">
+                      <form action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=PUT" method="POST">
 
 
-                <div class="form-group hiddenForms">
-                  <input class="form-control" type="text" name='stock[storingUnit]'
-                    value='<%= collection.storingUnit%>'>
-                </div>
+                        <div class="form-group hiddenForms">
+                          <input class="form-control" type="text" name='stock[storingUnit]'
+                            value='<%= collection.storingUnit%>'>
+                        </div>
 
-                <div class="form-group hiddenForms">
-                  <input class="form-control" type="text" name='stock[volume]' value='0'>
-                </div>
+                        <div class="form-group hiddenForms">
+                          <input class="form-control" type="text" name='stock[volume]' value='0'>
+                        </div>
 
-                <div class="form-group hiddenForms">
-                  <input class="form-control" type="text" name='stock[location]' value="<%=collection.location%>">
-                </div>
+                        <div class="form-group hiddenForms">
+                          <input class="form-control" type="text" name='stock[location]'
+                            value="<%=collection.location%>">
+                        </div>
 
-                <div class="form-group hiddenForms">
-                  <input class="form-control" type="text" name='stock[action]' value="waste">
-                </div>
+                        <div class="form-group hiddenForms">
+                          <input class="form-control" type="text" name='stock[action]' value="sold">
+                        </div>
 
-                <div class="form-group hiddenForms">
-                  <input class="form-control" type="text" name='stock[changeFromLast]' value="0">
-                </div>
+                        <div class="form-group hiddenForms">
+                          <input class="form-control" type="text" name='stock[changeFromLast]' value="0">
+                        </div>
 
-                <div class="form-group">
-                  <button class="btn btn-outline-danger stock-remove-buttons">MARK AS WASTE</button>
-                </div>
-              </form>
+                        <div class="form-group">
+                          <button class="btn  btn-outline-primary stock-remove-buttons">MARK AS SOLD</button>
+                        </div>
+                      </form>
 
-            </th>
-
-          </tr>
-        </tbody>
-
-        <% } %>
-
-        <% }); %>
-        <thead>
-          <tr>
-            <th scope="col" class="stockTHStoring">
-              <div class="dropdown">
-                <button class="btn btn-xs btn-outline-secondary waves-effect dropdown-toggle multiSubmit" type="button"
-                  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                  BULK ACTION
-                </button>
-                <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
-                  <li class="dropdown-item"><button class="btn btn-xs btn-danger submitSold" id="">MARK ALL
-                      SOLD</button></li>
-                  <li class="dropdown-item"><button class="btn btn-xs btn-warning submitWaste" id="">MARK ALL
-                      WASTE</button></li>
-                  <li class="dropdown-divider"></li>
-                  <li class="dropdown-submenu">
-                    <a class="dropdown-item" tabindex="-1" href="#">Move location to:</a>
-                    <ul class="dropdown-menu">
-                      <% locations.forEach(location => { %>
-                      <li class="dropdown-item"><button
-                          class="btn btn-xs submitLocation"><%=location || 'LOCATION UNASSIGNED' %></button></li>
-                      <% }); %>
-
-                    </ul>
-                  </li>
-                </ul>
-              </div>
-            </th>
-          </tr>
-        </thead>
-      </table>
-    </div>
-    <%}); %>
+                      <form action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=PUT" method="POST">
 
 
+                        <div class="form-group hiddenForms">
+                          <input class="form-control" type="text" name='stock[storingUnit]'
+                            value='<%= collection.storingUnit%>'>
+                        </div>
+
+                        <div class="form-group hiddenForms">
+                          <input class="form-control" type="text" name='stock[volume]' value='0'>
+                        </div>
+
+                        <div class="form-group hiddenForms">
+                          <input class="form-control" type="text" name='stock[location]'
+                            value="<%=collection.location%>">
+                        </div>
+
+                        <div class="form-group hiddenForms">
+                          <input class="form-control" type="text" name='stock[action]' value="waste">
+                        </div>
+
+                        <div class="form-group hiddenForms">
+                          <input class="form-control" type="text" name='stock[changeFromLast]' value="0">
+                        </div>
+
+                        <div class="form-group">
+                          <button class="btn btn-outline-danger stock-remove-buttons">MARK AS WASTE</button>
+                        </div>
+                      </form>
+
+                    </th>
+
+                  </tr>
+                </tbody>
+
+                <% } %>
+
+                <% }); %>
+                <thead>
+                  <tr>
+                    <th scope="col" class="stockTHStoring">
+                      <div class="dropdown">
+                        <button class="btn btn-xs btn-outline-secondary waves-effect dropdown-toggle multiSubmit"
+                          type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                          BULK ACTION
+                        </button>
+                        <ul class="dropdown-menu multi-level" role="menu" aria-labelledby="dropdownMenu">
+                          <li class="dropdown-item"><button class="btn btn-xs btn-danger submitSold" id="">MARK ALL
+                              SOLD</button></li>
+                          <li class="dropdown-item"><button class="btn btn-xs btn-warning submitWaste" id="">MARK ALL
+                              WASTE</button></li>
+                          <li class="dropdown-divider"></li>
+                          <li class="dropdown-submenu">
+                            <a class="dropdown-item" tabindex="-1" href="#">Move location to:</a>
+                            <ul class="dropdown-menu">
+                              <% locations.forEach(location => { %>
+                              <li class="dropdown-item"><button
+                                  class="btn btn-xs submitLocation"><%=location || 'LOCATION UNASSIGNED' %></button>
+                              </li>
+                              <% }); %>
+
+                            </ul>
+                          </li>
+                        </ul>
+                      </div>
+                    </th>
+                  </tr>
+                </thead>
+              </table>
+            </div>
+            <%}); %>
 
 
+            <button class="collapsible btn btn-outline-warning waves-effect">ADD/EDIT STORAGE UNITS:</button>
+            <div class="contentCollapsible">
+              <table class="table ">
+                <thead>
+                  <tr>
+                    <th scope="col">Storing Unit:</th>
+                    <th scope="col">Approximate weight:</th>
+                    <th><a href="/stock/<%= stock._id %>/measures/new" class="btn btn-xs btn-success btn-block"
+                        style="">Add
+                        <br>
+                        <br>
+                        New</a></th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% stock.measures.forEach((measure) => { %>
+                  <tr>
+                    <th scope="col"> <%= measure.name %> </th>
+                    <th scope="col"> <%= measure.weight %> </th>
+                    <th><a href="/stock/<%= stock._id %>/measures/<%= measure._id %>/edit"
+                        class="btn btn-xs btn-warning btn-block">Edit</a>
+                      <form action="/stock/<%= stock._id %>/measures/<%= measure._id %>?_method=DELETE" method="POST">
+                        <button class="btn btn-xs btn-danger btn-block">Delete</button>
+                      </form>
+                    </th>
+                  </tr>
+
+                  <% });	%>
 
 
-    <button class="collapsible btn btn-outline-warning waves-effect">ADD/EDIT STORAGE UNITS:</button>
-    <div class="contentCollapsible">
-      <table class="table ">
-        <thead>
-          <tr>
-            <th scope="col">Storing Unit:</th>
-            <th scope="col">Approximate weight:</th>
-            <th><a href="/stock/<%= stock._id %>/measures/new" class="btn btn-xs btn-success btn-block" style="">Add
-                <br>
-                <br>
-                New</a></th>
-          </tr>
-        </thead>
-        <tbody>
-          <% stock.measures.forEach((measure) => { %>
-          <tr>
-            <th scope="col"> <%= measure.name %> </th>
-            <th scope="col"> <%= measure.weight %> </th>
-            <th><a href="/stock/<%= stock._id %>/measures/<%= measure._id %>/edit"
-                class="btn btn-xs btn-warning btn-block">Edit</a>
-              <form action="/stock/<%= stock._id %>/measures/<%= measure._id %>?_method=DELETE" method="POST">
-                <button class="btn btn-xs btn-danger btn-block">Delete</button>
-              </form>
-            </th>
-          </tr>
-
-          <% });	%>
-
-
-        </tbody>
-      </table>
-    </div>
-    <hr class="my-4">
-    <a href="<%=/stock/%>" class="btn btn-outline-secondary waves-effect btn-block">Go Back</a>
+                </tbody>
+              </table>
+            </div>
+            <hr class="my-4">
+            <a href="<%=/stock/%>" class="btn btn-outline-secondary waves-effect btn-block">Go Back</a>
   </div>
 
   <div class="buttons-stock">

@@ -1,22 +1,84 @@
 <%- include ('../partials/header') %>
 
-
+<% console.log(stock)%>
 <div class="container">
     <div class="jumbotron">
         <h1 style="text-align: center;">Add a Storage Unit for <%= stock.name %></h1>
         <div style="width: 90%; margin: 40px auto;">
             <form action="/stock/<%=stock._id %>/measures/" method="POST">
 
-                <h5>Storage Unit Name ( make sure it's clear! ) :</h5>
+                <h5>Choose a name for this container ( make sure it's clear! ) :</h5>
                 <div class="form-group">
                     <input class="form-control" type="text" name='measure[name]'
                         placeholder="i.e. Gastronome(1/6- DEEP) or Araven Container Large 12l etc" required>
                 </div>
-                <h5>Weight (insert an average weight of above item in a given container when FULL in kg ) :</h5>
-                <div class="form-group">
-                    <input class="form-control" type="number" name='measure[weight]'
-                        placeholder="use numbers only! - i.e. 12kg is 12" required>
+                <div class="<%=(stock.volumeType === "unit") ? 'displayNone' : '' %>">
+                    <h5>Weight (insert an average
+                        weight of above item in a given container when FULL in kg ) :</h5>
+                    <div class="form-group">
+                        <input class="form-control" type="number" name='measure[weight]'
+                            placeholder="use numbers only! - i.e. 12kg is 12"
+                            <%=(stock.volumeType === "weight") ? 'required' : 'disabled="disabled"' %>>
+                        <input class="form-group hiddenForms" type="text" value="weight" name="measure[volumeType]"
+                            <%=(stock.volumeType === "weight") ? '' : 'disabled="disabled"' %>>
+                    </div>
                 </div>
+                <div class="<%=(stock.volumeType === "weight") ? 'hiddenForms' : '' %>" id="unitForm">
+                    <thead>
+                        <tr>
+                            <th class="locationTable table-location-title" colspan="3">
+                                <h5>Is it a box or a single item?</h5>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <th>
+                                <div class="form-check btn-group btn-group-toggle" data-toggle="buttons"
+                                    style="padding-left: 0px; width: 100%;">
+                                    <label class="btn btn-sq btn-outline-info categoryBtns">
+                                        <input class="form-check-input" type="radio" value="weight" name='volumeType'
+                                            id="box">
+                                        BOX/PACK
+                                    </label>
+                                    <label class="btn btn-sq btn-outline-success categoryBtns">
+                                        <input class="form-check-input" type="radio" value="unit" name='volumeType'
+                                            id="single">
+                                        SINGLE
+                                    </label>
+                                </div>
+                            </th>
+                        </tr>
+                        <tr>
+                            <th>
+
+                            </th>
+                        </tr>
+                    </tbody>
+                    <div class="" id="boxVolume" style="margin-top: 25px;">
+                        <!-- items in a box or weighted -->
+                        <div id="boxOrWeightForm">
+                            <h5>How many stock items are in 1 FULL box? </h5>
+                            <div class="form-group">
+                                <input class="form-control" min="1" max="10000" step="1" value='10' type="number"
+                                    name='measure[weight]' placeholder="Estimate if you're not sure"
+                                    id="volumeValueManual"
+                                    <%=(stock.volumeType === "unit") ? 'required' : 'disabled="disabled"' %>>
+                                <input class="form-group hiddenForms" type="text" value="box"
+                                    name="measure[volumeType]">
+                            </div>
+                        </div>
+                        <!-- single items only -->
+                        <div id="singleItemsForm" class="hiddenForms">
+                            <input value='1' name='measure[weight]' id="volumeValueManual">
+                            <input class="form-group hiddenForms" type="text" value="singleItem"
+                                name="measure[volumeType]">
+                        </div>
+                    </div>
+
+                </div>
+
+
         </div>
         <div class="form-group">
             <button class="btn btn-lg btn-default btn-block btn-primary">Submit!</button>
@@ -29,5 +91,5 @@
 
 
 
-
+<script src="/JS/containerCreate.js"></script>
 <%- include('../partials/footer') %>

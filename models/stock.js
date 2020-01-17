@@ -4,6 +4,7 @@ const stockSchema = new mongoose.Schema({
 	name: { type: String, required: [true, "It needs to be names silly!"] },
 	icon: String,
 	category: { type: String, required: [true, "Choose a category first!"] },
+	volumeType: { type: String, required: [true, "Please answer - How do you measure this item?"] },
 	amount: String,
 	description: String,
 	measures: [

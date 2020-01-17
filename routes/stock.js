@@ -31,15 +31,17 @@ router.post('/', middleware.isLoggedIn, function (req, res) {
 	let name = req.body.name;
 	let category = req.body.category;
 	let icon = req.body.icon;
+	let volumeType = req.body.volumeType;
 	let author = {
 		id: req.user._id,
 		username: req.user.username
 	}
-	let newStockItem = { name: name, icon: icon, category: category, author: author }
+	let newStockItem = { name: name, icon: icon, category: category, author: author, volumeType: volumeType }
 	// Create a new stock and save to DB
 	Stock.create(newStockItem, function (err, newlyCreated) {
 
 		if (err) {
+			console.log(err)
 			req.flash("error", err.errors.category.message);
 			return res.redirect("stock/new");
 		} else {
@@ -57,11 +59,15 @@ router.get('/:id', middleware.isLoggedIn, function (req, res) {
 		if (err) {
 			console.log(err)
 		} else {
+			// locations
 			let locations = [];
 			foundStockItem.stockTake.forEach(collection => {
 				locations.push(collection.location)
 			})
 			let locationsSet = new Set(locations);
+			// item weight
+
+
 			res.render('stock/show', { stock: foundStockItem, locations: locationsSet })
 		}
 	});

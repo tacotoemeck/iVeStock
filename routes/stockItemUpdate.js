@@ -41,7 +41,7 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
         } else {
             // Add a new storage method 
             StockUpdate.create(req.body.stock, function (err, stockItem) {
-
+                console.log(req.body.stock)
                 if (err) {
                     console.log(err)
                     req.flash("error", err.errors.storingUnit.message);
@@ -54,6 +54,7 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
                         stockItem.action = "created";
                         stockItem.dateCreated = mm + '/' + dd + '/' + yyyy;
                         stockItem.save();
+                        console.log(stockItem)
                     });
                     stock.stockTake.push(stockItem);
                     stock.save();
