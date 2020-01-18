@@ -3,6 +3,7 @@ const mongoose = require('mongoose');
 const stockItemSchema = new mongoose.Schema({
     dateCreated: String,
     countMethod: String,
+    volumeType: String,
     volume: String,
     volumeInKg: String,
     volumeInUnit: String,

@@ -5,7 +5,7 @@ let detachedSingleForm = $('#singleItemsForm').detach();
 
 // variables for add new stockItem form
 const addNewItemForm = $('#addNewItemForm');
-
+let volumeType;
 
 $('#box').click(function () {
     if ($('#box').is(':checked')) {
@@ -22,29 +22,44 @@ $('#single').click(function () {
     }
 });
 
-// display correct form when creating a new stock item
-
-
 
 $('.measureButtons').click(function () {
-
+    let container = this.dataset.volumetype;
+    volumeType = this.dataset.volumetype;
     if ($('.measureButtons').is(':checked')) {
-        console.log(this.dataset.volumetype)
-        if (this.dataset.volumetype === 'box' || this.dataset.volumetype === 'weight') {
-            $('#boxedAndWeightedItemsADD').removeClass("hiddenForms");
-            $('#singleItemsADD').addClass("hiddenForms");
-            $('#singleItemVolume').attr("disabled", true)
-            $('#singleItem').attr("disabled", true)
-        }
-
-        if (this.dataset.volumetype === 'singleItem') {
-
-            $('#boxedAndWeightedItemsADD').addClass("hiddenForms");
-            $('#singleItemsADD').removeClass("hiddenForms");
-            $('.progress-input').attr("disabled", true)
-            $('#boxORweight').attr("disabled", true)
-
-        }
+        displayCorrectUpdateForm(container)
     }
 });
+
+$(document).ready(function () {
+    let container = document.querySelector('.measureButtons').dataset.volumetype;
+    if ($('.measureButtons').is(':checked')) {
+        displayCorrectUpdateForm(container)
+    }
+});
+
+
+function displayCorrectUpdateForm(element) {
+    if (element === 'box' || element === 'weight') {
+        $('#boxedAndWeightedItemsADD').removeClass("hiddenForms");
+        $('#singleItemsADD').addClass("hiddenForms");
+        $('#singleItemVolume').attr("disabled", true)
+        $('#singleItem').attr("disabled", true)
+        $('#singleItemVolumeType').attr("disabled", true)
+        $('#boxORweightVolumeType').val(volumeType);
+
+    }
+
+    if (element === 'singleItem') {
+
+        $('#boxedAndWeightedItemsADD').addClass("hiddenForms");
+        $('#singleItemsADD').removeClass("hiddenForms");
+        $('.progress-input').attr("disabled", true)
+        $('#boxORweight').attr("disabled", true)
+        $('#boxORweightVolumeType').attr("disabled", true)
+
+    }
+}
+
+
 

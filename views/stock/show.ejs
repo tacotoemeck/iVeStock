@@ -17,20 +17,20 @@
           <th scope="col" class="archivo h1 text-right">
 
             <% let total = 0; %>
-
+            <!-- logic for displaying weighted items here -->
             <% if ( stock.volumeType === "weight" ) { %>
             <% for (let i = 0; i < stock.stockTake.length; i++) { %>
-            <%console.log(stock.stockTake[i])%>
+
             <%if(stock.stockTake[i].action !== "waste" && stock.stockTake[i].action !== "sold") {%>
             <% total+=Number(stock.stockTake[i].volumeInKg) %>
             <% }; %>
             <% } %>
             <%= total.toFixed(2) %> kg
             <%}%>
-            <!-- logic for weight will go here -->
+            <!-- logic for displaying countable items here -->
             <% if ( stock.volumeType === "unit" ) { %>
             <% for (let i = 0; i < stock.stockTake.length; i++) { %>
-            <%console.log(stock.stockTake[i])%>
+
             <%if(stock.stockTake[i].action !== "waste" && stock.stockTake[i].action !== "sold") {%>
             <%if(stock.stockTake[i].countMethod === 'boxORweight') { %>
             <% total+=Number(stock.stockTake[i].volumeInKg) %>
@@ -49,16 +49,16 @@
       </thead>
 
     </table>
-
+              <!-- display stock by location     -->
     <% locations.forEach(location => { %>
             <div class="table-responsive">
               <table class="table table-striped">
                 <thead>
-                  <tr>
+                  <tr class="table-primary table-borderless">
                     <th class="locationTable table-location-title" colspan="3">
                       <%=location.toUpperCase() || 'LOCATION UNASSIGNED' %>
                     </th>
-                  </tr>
+                  </tr cl>
                 </thead>
 
 
@@ -79,7 +79,7 @@
                         <label class="form-check-label" style="margin-left: 20px;"><%= collection.storingUnit %></label>
                       </div>
                     </th>
-                    <%console.log(collection)%>
+
                     <th scope="col" class="stockTHWeight">
                       <!-- if items is measured in kg -->
                       <% if (stock.volumeType === "weight") { %>
@@ -96,7 +96,7 @@
                       <% } %>
 
                     </th>
-
+                    <!-- hidden prepopulated form for SOLD -->
                     <th scope="col" class="currentStockButtons">
                       <a href="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>/edit"
                         class=" btn  btn-outline-success updateBtn stock-remove-buttons">UPDATE</a>
@@ -131,6 +131,7 @@
                         </div>
                       </form>
 
+                      <!-- hidden prepopulated form for WASTE -->
                       <form action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=PUT" method="POST">
 
 
@@ -167,7 +168,7 @@
                 </tbody>
 
                 <% } %>
-
+                <!-- bulk action bdropdown menu -->
                 <% }); %>
                 <thead>
                   <tr>
@@ -203,7 +204,7 @@
             </div>
             <%}); %>
 
-
+            <!-- adding new measure (container/storage) units -->
             <button class="collapsible btn btn-outline-warning waves-effect">ADD/EDIT STORAGE UNITS:</button>
             <div class="contentCollapsible">
               <table class="table ">

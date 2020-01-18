@@ -41,20 +41,21 @@ router.post("/", middleware.isLoggedIn, function (req, res) {
         } else {
             // Add a new storage method 
             StockUpdate.create(req.body.stock, function (err, stockItem) {
-                console.log(req.body.stock)
+
                 if (err) {
                     console.log(err)
                     req.flash("error", err.errors.storingUnit.message);
                     return res.redirect("back");
                 } else {
                     History.create(stockItem, function (err, item) {
+
                         let storingUnit = stockItem.storingUnit.match(/(?<=\>).+?(?=\<)/g)
                         stockItem.storingUnitMaxWeight = storingUnit.toString();
                         stockItem.volumeInKg = stockItem.storingUnitMaxWeight * (stockItem.volume / 10);
                         stockItem.action = "created";
                         stockItem.dateCreated = mm + '/' + dd + '/' + yyyy;
                         stockItem.save();
-                        console.log(stockItem)
+
                     });
                     stock.stockTake.push(stockItem);
                     stock.save();

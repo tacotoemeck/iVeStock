@@ -61,12 +61,14 @@ router.get('/:id', middleware.isLoggedIn, function (req, res) {
 		} else {
 			// locations
 			let locations = [];
+
 			foundStockItem.stockTake.forEach(collection => {
-				locations.push(collection.location)
+				if (collection.action != "sold" && collection.action != "waste" && collection.volume != '0' && collection.volumeInKg != '0') {
+
+					locations.push(collection.location)
+				}
 			})
 			let locationsSet = new Set(locations);
-			// item weight
-
 
 			res.render('stock/show', { stock: foundStockItem, locations: locationsSet })
 		}
