@@ -21,6 +21,7 @@
             </thead>
 
             <%stock.forEach(item => { %>
+            <%console.log(item)%>
             <tr>
                 <th scope="col">
 
@@ -31,7 +32,7 @@
                     <% daySales.forEach(daySale => { %>
 
                     <% if ( daySale.date === date) { %>
-                    <%= daySale[item.name]%> kg
+                    <%= daySale[item.name]%> <%=(item.volumeType === 'weight') ? "kg" : "unit(s)"%>
                     <% } %>
                     <%  })%>
 
@@ -41,7 +42,7 @@
                     <% dayWaste.forEach(dayWaste => { %>
 
                     <% if ( dayWaste.date === date) { %>
-                    <%= dayWaste[item.name]%> kg
+                    <%= dayWaste[item.name]%> <%=(item.volumeType === 'weight') ? "kg" : "unit(s)"%>
                     <% } %>
                     <%  })%>
                     <% }) %>

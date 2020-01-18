@@ -40,7 +40,7 @@
             <% }; %>
             <% } %>
             <% } %>
-            <%= total.toFixed(0) %> units
+            <%= Math.floor(total) %> units
             <%}%>
            
           </th>
@@ -88,7 +88,7 @@
                       <!-- if items is measured in units -->
                       <% if (stock.volumeType === "unit") { %>
                       <% if(collection.countMethod === "boxORweight") { %>
-                      <%= Number(collection.volumeInKg) %> units
+                      <%= Math.floor(Number(collection.volumeInKg))%> units
                       <% } %>
                       <% if(collection.countMethod === "singleItem") { %>
                       <%= Number(collection.volume) %> unit

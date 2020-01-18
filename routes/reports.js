@@ -42,6 +42,31 @@ router.get('/', middleware.isLoggedIn, async (req, res) => {
 
             stockItems.forEach(item => {
                 // console.log(stock.filter(x => x.name == item).map(entry => entry.stockTake).flat().map(stockItem => stockItem.history).flat().map(history => (history.date === day) ? history.changeFromLastInKg : 0))
+
+                // get volume of single units sold
+                let singleUnitsSold = stock
+                    .filter(x => x.name == item)
+                    .map(entry => entry)
+                    .map(stockItem => stockItem.stockTake).flat()
+                    .map(item => (item.volumeType === "singleItem") && item)
+                    .map(entry => entry.history)
+                    .filter(item => item !== undefined).flat()
+                    .map(history => (history.date === day && history.action !== "waste") ? history.changeFromLast : 0)
+
+                console.log("Single units sold are: " + singleUnitsSold.flat())
+
+
+                let soldBoxOrWeight = stock
+                    .filter(x => x.name == item)
+                    .map(entry => entry)
+                    .map(stockItem => stockItem.stockTake).flat()
+                    .map(item => (item.volumeType !== "singleItem") && item)
+                    .map(entry => entry.history)
+                    .filter(item => item !== undefined).flat()
+                    .map(history => (history.date === day && history.action !== "waste") ? history.changeFromLastInKg : 0)
+
+                console.log("Bulk units sold are: " + soldBoxOrWeight.flat())
+
                 let sold = stock
                     .filter(x => x.name == item)
                     .map(entry => entry.stockTake).flat()
@@ -50,9 +75,15 @@ router.get('/', middleware.isLoggedIn, async (req, res) => {
 
                 // sum up all sales from the day
                 let daySales = 0;
-                for (let i = 0; i < sold.length; i++) {
-                    daySales += Number(Math.abs(sold[i]))
-                }
+                calculateDaySales(singleUnitsSold)
+                calculateDaySales(soldBoxOrWeight)
+
+                function calculateDaySales(arr) {
+                    for (let i = 0; i < arr.length; i++) {
+                        daySales += Number(Math.abs(arr[i]))
+                    }
+                };
+
                 // display day sales 
                 salesPerDay[item] = daySales.toFixed(2);
             });
@@ -61,18 +92,40 @@ router.get('/', middleware.isLoggedIn, async (req, res) => {
             wastePerDay.date = day;
 
             stockItems.forEach(item => {
-                // console.log(stock.filter(x => x.name == item).map(entry => entry.stockTake).flat().map(stockItem => stockItem.history).flat().map(history => (history.date === day) ? history.changeFromLastInKg : 0))
-                let wasted = stock
+
+
+                let singleUnitsWaste = stock
                     .filter(x => x.name == item)
-                    .map(entry => entry.stockTake).flat()
-                    .map(stockItem => stockItem.history).flat()
+                    .map(entry => entry)
+                    .map(stockItem => stockItem.stockTake).flat()
+                    .map(item => (item.volumeType === "singleItem") && item)
+                    .map(entry => entry.history)
+                    .filter(item => item !== undefined).flat()
+                    .map(history => (history.date === day && history.action !== "sold" && history.action !== "update") ? history.changeFromLast : 0)
+
+
+                let wasteBoxOrWeight = stock
+                    .filter(x => x.name == item)
+                    .map(entry => entry)
+                    .map(stockItem => stockItem.stockTake).flat()
+                    .map(item => (item.volumeType !== "singleItem") && item)
+                    .map(entry => entry.history)
+                    .filter(item => item !== undefined).flat()
                     .map(history => (history.date === day && history.action === "waste") ? history.changeFromLastInKg : 0)
+
 
                 // sum up all sales from the day
                 let dayWaste = 0;
-                for (let i = 0; i < wasted.length; i++) {
-                    dayWaste += Number(Math.abs(wasted[i]))
-                }
+
+                calculateDayWaste(singleUnitsWaste)
+                calculateDayWaste(wasteBoxOrWeight)
+
+                function calculateDayWaste(arr) {
+                    for (let i = 0; i < arr.length; i++) {
+                        dayWaste += Number(Math.abs(arr[i]))
+                    }
+                };
+
                 // display day sales 
                 wastePerDay[item] = dayWaste.toFixed(2);
 

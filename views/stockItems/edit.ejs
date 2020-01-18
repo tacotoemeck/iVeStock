@@ -65,7 +65,7 @@
                                                 id="progress-display" role="progressbar"
                                                 style="width: <%= stockItems.volume * 10%>%; z-index:-1;"
                                                 aria-valuemin="0" aria-valuemax="10">
-                                                <span class="innerVal">10</span>
+                                                <span class="innerVal"><%= stockItems.volume%></span>
                                             </div>
                                         </div>
                                     </div>
@@ -97,7 +97,15 @@
                             <tr>
                                 <th>
                                     <input class="hiddenForms" id="boxORweight" name='stock[countMethod]'
-                                        value='<%= stockItems.volume%>'>
+                                        value='boxORweight'>
+                                </th>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <input class="hiddenForms" id="boxORweightVolumeType" name='stock[volumeType]'
+                                        value=''>
                                 </th>
                             </tr>
                         </tbody>
@@ -114,31 +122,42 @@
                         </th>
                         </tr>
                         </thead>
-                        <tr>
-                            <th>
-                                <input class="form-control form-control-lg progress-input-single-slider" min="1"
-                                    max="250" step="1" value='1' type="number"
-                                    placeholder="Use slider or enter number manually" style="text-align: center;">
-                            </th>
-                        </tr>
+                        <thead>
+                            <tr>
+                                <th>
+                                    <input class="form-control form-control-lg progress-input-single-slider" min="1"
+                                        max="<%= stockItems.volume%>" step="1" value='<%= stockItems.volume%>'
+                                        type="number" placeholder="Use slider or enter number manually"
+                                        style="text-align: center;">
+                                </th>
+                            </tr>
                         </thead>
 
                         <thead>
                             <tr>
                                 <th>
                                     <div class=" form-group slider-wrapper">
-                                        <input class="form-control progress-input-single" id="singleItemVolume"
-                                            type="range" name='stock[volume]' min="1" max="250" step="1"
-                                            value='<%= stockItems.volume%>'>
+                                        <input class="form-control progress-input-single" id="singleItemRange"
+                                            type="range" name='stock[volume]' min="1" max="<%= stockItems.volume%>"
+                                            step="1" value='<%= stockItems.volume%>'>
                                     </div>
                                 </th>
                             </tr>
                         </thead>
+                        <!-- add default count method -->
                         <tbody>
                             <tr>
                                 <th>
                                     <input class="hiddenForms" id="singleItem" name='stock[countMethod]'
-                                        value='<%= stockItems.volume%>'>
+                                        value='singleItem'>
+                                </th>
+                            </tr>
+                        </tbody>
+                        <tbody>
+                            <tr>
+                                <th>
+                                    <input class="hiddenForms" id="singleItemVolumeType" name='stock[volumeType]'
+                                        value='singleItem'>
                                 </th>
                             </tr>
                         </tbody>
