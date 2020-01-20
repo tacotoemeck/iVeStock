@@ -5,7 +5,7 @@
 	<div class="jumbotron">
 		<table class="table table-striped">
 
-
+			<%console.log(currentUser)%>
 			<thead>
 				<tr>
 					<th class="locationTable table-location-title" colspan="3">
@@ -19,7 +19,7 @@
 				<p>
 					<% stock.forEach((stock) => { %>
 
-					<% if ( stock.category === "Cooked") { %>
+					<% if ( stock.category === "Cooked" && stock.author.username == currentUser.username) { %>
 
 					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-outline-info">
 						<span style="font-size: 40px;"><%= stock.icon %></span><br />
@@ -48,7 +48,7 @@
 				<p>
 					<% stock.forEach((stock) => { %>
 
-					<% if ( stock.category === "Fresh") { %>
+					<% if ( stock.category === "Fresh" && stock.author.username == currentUser.username) { %>
 
 					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-outline-success">
 						<span style="font-size: 40px;"><%= stock.icon %></span><br />
@@ -78,7 +78,7 @@
 				<p>
 					<% stock.forEach((stock) => { %>
 
-					<% if ( stock.category === "Packaging") { %>
+					<% if ( stock.category === "Packaging" && stock.author.username == currentUser.username) { %>
 
 					<a href="/stock/<%= stock._id %>" class="btn btn-sq btn-outline-secondary">
 						<span style="font-size: 40px;"><%= stock.icon %></span><br />

@@ -70,8 +70,8 @@
                   <% if (location === collection.location && collection.action !== "sold" && collection.action !== "waste") { %>
                   <tr>
                     <td colspan="4">
-                      <div class="card text-center stock-cards">
-                        <div class="card-header text-left bg-secondary text-white">
+                      <div class="card text-center stock-cards shadow">
+                        <div class="card-header text-left ">
 
                           <div class="custom-control custom-checkbox">
 
@@ -80,73 +80,7 @@
                             <label class="form-check-label h5"><%= collection.storingUnit %></label>
                           </div>
                         </div>
-
-                        <a href="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>/edit"
-                          class=" btn  btn-success btn-block rounded-0 update-button">UPDATE</a></li>
-
-                        <div class="sold-or-waste-button">
-                          <form class="formsStock"
-                            action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=PUT" method="POST">
-
-
-                            <div class="hiddenForms">
-                              <input class="form-control" type="text" name='stock[storingUnit]'
-                                value='<%= collection.storingUnit%>'>
-                            </div>
-
-                            <div class="hiddenForms">
-                              <input class="form-control" type="text" name='stock[volume]' value='0'>
-                            </div>
-
-                            <div class="hiddenForms">
-                              <input class="form-control" type="text" name='stock[location]'
-                                value="<%=collection.location%>">
-                            </div>
-
-                            <div class="hiddenForms">
-                              <input class="form-control" type="text" name='stock[action]' value="sold">
-                            </div>
-
-                            <div class="hiddenForms">
-                              <input class="form-control" type="text" name='stock[changeFromLast]' value="0">
-                            </div>
-
-                            <div class="height100">
-                              <button class="btn  btn-primary btn-block rounded-0 height100">MARK AS SOLD</button>
-                            </div>
-                          </form>
-
-                          <form class="formsStock"
-                            action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=PUT" method="POST">
-
-                            <div class="form-group hiddenForms">
-                              <input class="form-control" type="text" name='stock[storingUnit]'
-                                value='<%= collection.storingUnit%>'>
-                            </div>
-
-                            <div class="form-group hiddenForms">
-                              <input class="form-control" type="text" name='stock[volume]' value='0'>
-                            </div>
-
-                            <div class="form-group hiddenForms">
-                              <input class="form-control" type="text" name='stock[location]'
-                                value="<%=collection.location%>">
-                            </div>
-
-                            <div class="form-group hiddenForms">
-                              <input class="form-control" type="text" name='stock[action]' value="waste">
-                            </div>
-
-                            <div class="form-group hiddenForms">
-                              <input class="form-control" type="text" name='stock[changeFromLast]' value="0">
-                            </div>
-
-                            <div class="form-group height100">
-                              <button class="btn btn-danger btn-block rounded-0 height100">MARK AS WASTE</button>
-                            </div>
-                          </form>
-                        </div>
-                        <div class=" card-footer text-muted">
+                        <div class="card-footer text-muted">
                           <h5 class="card-text text-right">
                             <!-- if items is measured in kg -->
                             <% if (stock.volumeType === "weight") { %>
@@ -163,6 +97,83 @@
                             <% } %>
                           </h5>
                         </div>
+                        <ul class="list-group list-group-flush">
+                          <li class="list-group-item"> <a
+                              href="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>/edit"
+                              class=" btn  btn-success btn-block update-button">UPDATE</a></li>
+                          </li>
+                          <li class="list-group-item">
+                            <div class="sold-or-waste-button">
+                              <form class="formsStock"
+                                action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=PUT"
+                                method="POST">
+
+
+                                <div class="hiddenForms">
+                                  <input class="form-control" type="text" name='stock[storingUnit]'
+                                    value='<%= collection.storingUnit%>'>
+                                </div>
+
+                                <div class="hiddenForms">
+                                  <input class="form-control" type="text" name='stock[volume]' value='0'>
+                                </div>
+
+                                <div class="hiddenForms">
+                                  <input class="form-control" type="text" name='stock[location]'
+                                    value="<%=collection.location%>">
+                                </div>
+
+                                <div class="hiddenForms">
+                                  <input class="form-control" type="text" name='stock[action]' value="sold">
+                                </div>
+
+                                <div class="hiddenForms">
+                                  <input class="form-control" type="text" name='stock[changeFromLast]' value="0">
+                                </div>
+
+                                <div class="height100">
+                                  <button class="btn  btn-primary btn-block height100">MARK AS SOLD</button>
+                                </div>
+                              </form>
+
+                              <form class="formsStock"
+                                action="/stock/<%= stock._id %>/stockUpdate/<%=collection._id%>?_method=PUT"
+                                method="POST">
+
+                                <div class="form-group hiddenForms">
+                                  <input class="form-control" type="text" name='stock[storingUnit]'
+                                    value='<%= collection.storingUnit%>'>
+                                </div>
+
+                                <div class="form-group hiddenForms">
+                                  <input class="form-control" type="text" name='stock[volume]' value='0'>
+                                </div>
+
+                                <div class="form-group hiddenForms">
+                                  <input class="form-control" type="text" name='stock[location]'
+                                    value="<%=collection.location%>">
+                                </div>
+
+                                <div class="form-group hiddenForms">
+                                  <input class="form-control" type="text" name='stock[action]' value="waste">
+                                </div>
+
+                                <div class="form-group hiddenForms">
+                                  <input class="form-control" type="text" name='stock[changeFromLast]' value="0">
+                                </div>
+
+                                <div class="form-group height100">
+                                  <button class="btn btn-danger btn-block height100">MARK AS WASTE</button>
+                                </div>
+                              </form>
+                            </div>
+                          </li>
+                        </ul>
+
+
+
+
+
                     </td>
                   </tr>
                 </tbody>
