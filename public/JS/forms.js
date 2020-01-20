@@ -46,7 +46,7 @@ $('.submitWaste').click(function () {
 
 // all move location
 $('.submitLocation').click(function () {
-    console.log("clicked")
+
     selected.forEach(item => {
         var updateUrl = '/stock/' + stockId + '/stockUpdate/' + item.id;
         var stock = {
@@ -89,4 +89,19 @@ function updateMany(action, volume) {
     })
 
 }
+
+$('.card-header').click(function () {
+    let checkbox = $(this).find(".checkedOnes")
+    if (!checkbox.prop("checked")) {
+        checkbox.prop('checked', true)
+        checkbox.closest('.stock-cards').addClass('border border-warning opacityHighlight')
+    }
+    else {
+        checkbox.prop('checked', false)
+        checkbox.closest('.stock-cards').removeClass('border border-warning opacityHighlight')
+    }
+
+
+
+})
 

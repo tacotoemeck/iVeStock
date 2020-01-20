@@ -12,32 +12,33 @@ const manualVolSingle = document.querySelector('.progress-input-single');
 
 var rect = progressBar.getBoundingClientRect();
 
-progressBar.addEventListener('click', function (e) {
+// progressBar.addEventListener('click', function (e) {
 
-    var y = e.clientY - rect.top;  //y position within the element.
+//     var y = e.clientY - rect.top;  //y position within the element.
 
-    let val = (y / 300).toFixed(2) - 1;
-    let displayVal = Math.abs(val).toFixed(2)
+//     let val = (y / 300).toFixed(2) - 1;
+//     let displayVal = Math.abs(val).toFixed(2)
 
-    progressBarDisplay.style.width = displayVal * 100 + '%';
-    progressBarVal.innerHTML = (displayVal * 10).toFixed(2);
-    document.getElementById('progress-input').value = (displayVal * 10).toFixed(2);
+//     progressBarDisplay.style.width = displayVal * 100 + '%';
 
-    manualVol.value = Number(slider.value);
+//     progressBarVal.innerHTML = displayVal * 100 + '%';
+//     document.getElementById('progress-input').value = (displayVal * 10).toFixed(2);
+
+//     manualVol.value = Number(slider.value);
 
 
-});
+// });
 
 slider.addEventListener('input', () => {
     progressBarDisplay.style.width = slider.value * 10 + '%';
-    progressBarVal.innerHTML = slider.value;
+    progressBarVal.innerHTML = slider.value * 10 + "%";
 
     manualVol.value = Number(slider.value);
 });
 
 manualVol.addEventListener('input', () => {
     progressBarDisplay.style.width = manualVol.value * 10 + '%';
-    progressBarVal.innerHTML = manualVol.value;
+    progressBarVal.innerHTML = manualVol.value * 10 + "%";;
     slider.value = manualVol.value;
 
 });

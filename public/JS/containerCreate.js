@@ -32,6 +32,7 @@ $('.measureButtons').click(function () {
 });
 
 $(document).ready(function () {
+    volumeType = document.querySelector('.measureButtons').volumetype;
     let container = document.querySelector('.measureButtons').dataset.volumetype;
     if ($('.measureButtons').is(':checked')) {
         displayCorrectUpdateForm(container)

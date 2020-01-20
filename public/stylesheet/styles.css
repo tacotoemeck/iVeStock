@@ -1,11 +1,16 @@
 @import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
 
+html, body {
+  overflow-x: hidden;
+}
+
 body {
   /* background-image: url("https://images.unsplash.com/photo-1465176728568-7da7e336b1e9?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=1950&q=80"); */
   background: #C9D6FF;  /* fallback for old browsers */
   background: -webkit-linear-gradient(to right, #E2E2E2, #C9D6FF);  /* Chrome 10-25, Safari 5.1-6 */
   background: linear-gradient(to right, #E2E2E2, #C9D6FF); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
   
+  position: relative
 }
 
 /* fonts */
@@ -16,7 +21,8 @@ body {
 
 .jumbotron {
   margin-top: 100px;
-  background: #E2E2E2;  /* fallback for old browsers */
+  background: #E2E2E2;  
+  /* background-color: black; */
 
 }
 
@@ -43,21 +49,31 @@ tr {
     width: 25%;
   }
 
-  .currentStockButtons {
-    display: flex;
-    width: 100%;
-    justify-content: space-evenly;
+  .height100 {
+    height: 100%;
   }
 
-  .updateBtn {
-    width:50%; display: flex;
-    flex-direction: column;
-    justify-content: center;
+  .stock-buttons {
+    display: flex;
   }
+
+  .sold-or-waste-button {
+    display: flex;
+  }
+
+  .opacityHighlight {
+    opacity: 0.7;
+  }
+
+  .formsStock {
+    flex-grow: 1;
+  }
+
 
   .hiddenForms {
     visibility: hidden;
     position: absolute;
+    margin: 0;
   }
 
   .displayNone {
@@ -69,10 +85,12 @@ tr {
     width: 100%;
   }
 
-  .stock-remove-buttons {
-    height: 80px;
-    margin-left: 2px;
+  .update-button {
+    height: 55px;
+    font-size: 30px;
   }
+
+  
 /* ==== square stock buttons ======= */
   .btn-sq {
     width: 120px !important;

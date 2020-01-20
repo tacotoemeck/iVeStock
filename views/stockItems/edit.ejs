@@ -52,7 +52,7 @@
                         <thead>
                             <tr>
                                 <th class="locationTable  table-location-title" colspan="3">
-                                    LEVEL
+                                    How full is the box / container ?
                                 </th>
                             </tr>
                         </thead>
@@ -93,22 +93,11 @@
                             </tr>
                         </thead>
                         <!-- add default count method -->
-                        <tbody>
-                            <tr>
-                                <th>
-                                    <input class="hiddenForms" id="boxORweight" name='stock[countMethod]'
-                                        value='boxORweight'>
-                                </th>
-                            </tr>
-                        </tbody>
-                        <tbody>
-                            <tr>
-                                <th>
-                                    <input class="hiddenForms" id="boxORweightVolumeType" name='stock[volumeType]'
-                                        value=''>
-                                </th>
-                            </tr>
-                        </tbody>
+
+                        <input class="hiddenForms" id="boxORweight" name='stock[countMethod]' value='boxORweight'>
+
+                        <input class="hiddenForms" id="boxORweightVolumeType" name='stock[volumeType]' value=''>
+
                     </table>
 
                     <!-- logic for single items only -->
