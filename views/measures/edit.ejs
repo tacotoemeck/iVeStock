@@ -2,8 +2,8 @@
 
 
 <div class="container">
-    <div class="jumbotron">
-        <h1 style="text-align: center;">Add a <%= measures.name %> for <%= measures._id %></h1>
+    <div class="jumbotron text-white">
+        <h1 style="text-align: center;">Edit <%= measures.name %> </h1>
         <div style="width: 90%; margin: 40px auto;">
 
             <form action="/stock/<%= stock_id %>/measures/<%=measures._id%>?_method=PUT" method="POST">
@@ -13,11 +13,11 @@
                     <input class="form-control" type="text" name="measures[name]" value='<%= measures.name %>'
                         placeholder="i.e. Gastronome(1/6- DEEP) or Araven Container Large 12l etc">
                 </div>
-                <h5>Weight (insert an average weight of above item in a given container when FULL in kg ) :</h5>
+                <!-- <h5>Weight (insert an average weight of above item in a given container when FULL in kg ) :</h5>
                 <div class="form-group">
                     <input class="form-control" type="number" name="measures[weight]" value='<%= measures.weight %>'
                         placeholder="use numbers only! - i.e. 12kg is 12">
-                </div>
+                </div> -->
         </div>
         <div class="form-group">
             <button class="btn btn-lg btn-default btn-block btn-primary">Submit!</button>

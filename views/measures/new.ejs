@@ -2,7 +2,7 @@
 
 <% console.log(stock)%>
 <div class="container">
-    <div class="jumbotron">
+    <div class="jumbotron text-white">
         <h1 style="text-align: center;">Add a Storage Unit for <%= stock.name %></h1>
         <div style="width: 90%; margin: 40px auto;">
             <form action="/stock/<%=stock._id %>/measures/" method="POST">

@@ -3,7 +3,8 @@
 <p style="visibility: hidden; position: absolute;" id="stockID"><%= stock._id %></p>
 <div class="container ">
   <div class="jumbotron ">
-    <h2 class="display-4 stock-headers archivo"><%= stock.name %><span style="font-size: 10vh"><%= stock.icon %></span>
+    <h2 class="display-4 stock-headers archivo text-white"><%= stock.name %><span
+        style="font-size: 10vh"><%= stock.icon %></span>
     </h2>
     <a href="/stock/<%= stock._id %>/stockUpdate/new" class="btn btn-outline-success btn-lg waves-effect btn-block">ADD
       NEW STOCK</a>
@@ -14,7 +15,7 @@
     <table class="table table-borderless">
       <thead>
         <tr>
-          <th scope="col" class="archivo h1 text-right">
+          <th scope="col" class="archivo h1 text-right text-white">
 
             <% let total = 0; %>
             <!-- logic for displaying weighted items here -->
@@ -51,10 +52,10 @@
     </table>
               <!-- display stock by location     -->
     <% locations.forEach(location => { %>
-            <div class="table-responsive">
+            <div class="table-responsive table-borderless">
               <table class="table">
                 <thead>
-                  <tr class="table-primary table-borderless">
+                  <tr class="table-warning table-borderless">
                     <th class="table-location-title" colspan="4">
                       <%=location.toUpperCase() || 'LOCATION UNASSIGNED' %>
                     </th>
@@ -218,7 +219,7 @@
             <!-- adding new measure (container/storage) units -->
             <button class="collapsible btn btn-outline-warning waves-effect">ADD/EDIT STORAGE UNITS:</button>
             <div class="contentCollapsible">
-              <table class="table ">
+              <table class="table table-borderless text-white">
                 <thead>
                   <tr>
                     <th scope="col">Storing Unit:</th>

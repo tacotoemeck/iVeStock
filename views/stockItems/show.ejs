@@ -2,7 +2,7 @@
 
 
 <div class="container">
-    <div class="jumbotron">
+    <div class="jumbotron text-white">
         <table class="table table-dark table-striped">
             <thead>
                 <tr>
@@ -29,7 +29,7 @@
                                 <input class="form-check-input measureButtons" type="radio"
                                     data-volumeType="<%=measure.volumeType%>"
                                     value="<%= measure.name + ">" + measure.weight + "<"%>" name='stock[storingUnit]'>
-                                <%=measure.name%>
+                                <%=(measure.name) %>
                             </label>
                         </div>
                         <% }) %>
@@ -46,11 +46,11 @@
                 <hr class=" my-4">
                 <!-- logic for box or weighted items -->
                 <div id="addNewItemForm">
-                    <table class="table table-striped hiddenForms" id="boxedAndWeightedItemsADD">
+                    <table class="table table-striped table-borderless hiddenForms" id="boxedAndWeightedItemsADD">
 
                         <thead>
                             <tr>
-                                <th class="locationTable  table-location-title" colspan="3">
+                                <th class="locationTable  table-location-title text-white" colspan="3">
                                     How full is the box / container ?
 
                                 </th>
@@ -103,7 +103,7 @@
 
                     <!-- logic for single items only -->
 
-                    <table class="table table-striped hiddenForms" id="singleItemsADD"">
+                    <table class="table table-striped table-borderless hiddenForms text-white" id="singleItemsADD"">
 
                         <thead>
                             <tr>
