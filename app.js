@@ -43,9 +43,14 @@ mongoose.set('useUnifiedTopology', true);
 // console.log(process.env.DATABASEURL)
 
 // seedDB();
-mongoose.connect('mongodb://localhost/iVeStock', { useNewUrlParser: true, useUnifiedTopology: true })
+// mongoose.connect('mongodb://localhost/iVeStock', { useNewUrlParser: true, useUnifiedTopology: true })
+// 	.then(() => console.log('connecting to database successful'))
+// 	.catch(err => console.error('could not connect to mongo DB', err));
+mongoose.connect('mongodb+srv://tommy:peezda69@cluster0-odf2b.mongodb.net/test?retryWrites=true&w=majority', { useNewUrlParser: true, useUnifiedTopology: true })
 	.then(() => console.log('connecting to database successful'))
 	.catch(err => console.error('could not connect to mongo DB', err));
+
+// mongodb+srv://tommy:<password>@cluster0-odf2b.mongodb.net/test?retryWrites=true&w=majority
 
 app.use(bodyParser.urlencoded({ extended: true }));
 app.set('view engine', 'ejs');
